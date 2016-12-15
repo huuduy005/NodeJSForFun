@@ -13,8 +13,8 @@ var mAccessToken = 'EAATnBNPBOEgBAAZBDnJg1dv3vbKvFal6Em5LLFP7mvGInJsHjUwcODngcVa
 router.get('/', function (req, res) {
     if (req.query['hub.verify_token'] === code_verify) {
         res.send(req.query['hub.challenge']);
-    }
-    res.send('Error, wrong validation token');
+    } else
+        res.send('Error, wrong validation token');
 });
 
 //Nhận tin nhắn từ facebook
