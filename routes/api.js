@@ -33,10 +33,16 @@ function YumViews() {
         var $ = cheerio.load(body);
         var num_view = $('.idea-info').children().eq(1).find('tr').eq(1).children().eq(1).text().trim();
         console.log(' + Số lượt view hiện tại: ' + num_view);
-        var time = getRandomInt(3, 15);
-        time = time * 10000;
-        setTimeout(YumViews, time);
-        console.log(' - Sẽ tăng lượt view sau ' + time + ' phút nữa.');
+        var n = parseInt(num_view);
+        if (n < 500) {
+            var time = getRandomInt(3, 15);
+            time = time * 10000;
+            setTimeout(YumViews, time);
+            console.log(' - Sẽ tăng lượt view sau ' + time + ' phút nữa.');
+        } else {
+            console.log('Số lượng view đã đạt ' + n);
+        }
+
     });
 }
 

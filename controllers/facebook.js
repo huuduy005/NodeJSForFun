@@ -7,6 +7,8 @@ var router = express.Router();
 var fs = require('fs');
 
 var code_verify = 'hulo005';
+var mAccessToken = 'EAATnBNPBOEgBAAZBDnJg1dv3vbKvFal6Em5LLFP7mvGInJsHjUwcODngcVa15oIhTLO6wPOauq1cIeYiWYghvOBiVRWIscou2cigeFi3JiIe4WG8C206CqxprXKfblHRSoT52JBUxPczrasAUGkev7ZAxYD3D9PFOP5U3gQgZDZD';
+
 //Facebook xác thực webhook
 router.get('/', function (req, res) {
     if (req.query['hub.verify_token'] === code_verify) {
@@ -14,6 +16,7 @@ router.get('/', function (req, res) {
     }
     res.send('Error, wrong validation token');
 });
+
 //Nhận tin nhắn từ facebook
 router.post('/', function (req, res) {
     var entries = req.body.entry;
@@ -45,11 +48,6 @@ router.post('/', function (req, res) {
         }
     }
     res.status(200).send("OK");
-});
-
-router.get('/tiki', function (req, res) {
-    var r = Tiki.check('https://tiki.vn/may-anh-canon-700d-va-lens-18-55-stm-p114593.html');
-    res.send(r);
 });
 
 var mess = [];
@@ -97,7 +95,7 @@ function sendMessage(senderId, message) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
-            access_token: 'EAATnBNPBOEgBAAZBDnJg1dv3vbKvFal6Em5LLFP7mvGInJsHjUwcODngcVa15oIhTLO6wPOauq1cIeYiWYghvOBiVRWIscou2cigeFi3JiIe4WG8C206CqxprXKfblHRSoT52JBUxPczrasAUGkev7ZAxYD3D9PFOP5U3gQgZDZD',
+            access_token: mAccessToken,
         },
         method: 'POST',
         json: {
@@ -171,7 +169,7 @@ function sendBusAround(senderId, lat, long) {
             request({
                 url: 'https://graph.facebook.com/v2.6/me/messages',
                 qs: {
-                    access_token: 'EAATnBNPBOEgBAAZBDnJg1dv3vbKvFal6Em5LLFP7mvGInJsHjUwcODngcVa15oIhTLO6wPOauq1cIeYiWYghvOBiVRWIscou2cigeFi3JiIe4WG8C206CqxprXKfblHRSoT52JBUxPczrasAUGkev7ZAxYD3D9PFOP5U3gQgZDZD',
+                    access_token: mAccessToken,
                 },
                 method: 'POST',
                 json: data
