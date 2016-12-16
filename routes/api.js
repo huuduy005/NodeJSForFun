@@ -35,7 +35,7 @@ function YumViews() {
         console.log(' + Số lượt view hiện tại: ' + num_view);
         var n = parseInt(num_view);
         if (n < 500) {
-            var time = getRandomInt(3, 15);
+            var time = getRandomInt(2, 8);
             time = time * 10000;
             setTimeout(YumViews, time);
             console.log(' - Sẽ tăng lượt view sau ' + time + ' phút nữa.');
