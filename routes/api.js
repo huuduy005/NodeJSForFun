@@ -34,7 +34,7 @@ function YumViews() {
         var num_view = $('.idea-info').children().eq(1).find('tr').eq(1).children().eq(1).text().trim();
         console.log(' + Số lượt view hiện tại: ' + num_view);
         var n = parseInt(num_view);
-        if (n < 500) {
+        if (n < 1000) {
             var time = getRandomInt(2, 8);
             time = time * 10000;
             setTimeout(YumViews, time);
