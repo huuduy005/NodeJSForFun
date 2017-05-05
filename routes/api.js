@@ -8,6 +8,8 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 var facebook = require('../controllers/facebook');
+var tiki = require('../controllers/tiki');
+var lazada = require('../controllers/lazada');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -15,6 +17,10 @@ router.get('/', function (req, res, next) {
 });
 
 router.use('/facebook', facebook);
+
+router.use('/tiki', tiki);
+
+router.use('/lazada', lazada);
 
 /*Tăng lượt view cho Yum*/
 function getRandomInt(min, max) {
@@ -46,7 +52,7 @@ function YumViews() {
     });
 }
 
-console.log(getTime());
-setTimeout(YumViews, 3000);
+// console.log(getTime());
+// setTimeout(YumViews, 3000);
 
 module.exports = router;
