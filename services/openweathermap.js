@@ -10,7 +10,8 @@ function get_weather(location, callback) {
             callback('Không thể lấy thông tin thời tiết', null);
             return;
         }
-        var text = 'Thời tiết ở ' + location + ' có nhiệt đồ là ' + body.main.temp_min;
+        var data = JSON.parse(body);
+        var text = 'Thời tiết ở ' + location + ' có nhiệt đồ là ' + data.main.temp_min;
         callback(null, text);
     });
 }

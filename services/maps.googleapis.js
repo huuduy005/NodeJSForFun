@@ -10,7 +10,8 @@ function getCity(lat, long, callback) {
             callback('Không thể lấy thông tin thành phố', null);
             return;
         }
-        var city = body.results[0].address_components[3].long_name;
+        var data = JSON.parse(body);
+        var city = data.results[0].address_components[3].long_name;
         callback(null, city);
     });
 }
