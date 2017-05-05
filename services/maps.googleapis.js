@@ -11,7 +11,7 @@ function getCity(lat, long, callback) {
             return;
         }
         var data = JSON.parse(body);
-        var city = data.results[0].address_components[3].long_name;
+        var city = data.results[0].address_components[5].long_name;
         callback(null, city);
     });
 }
