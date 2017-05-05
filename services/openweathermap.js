@@ -11,7 +11,9 @@ function get_weather(location, callback) {
             return;
         }
         var data = JSON.parse(body);
-        var text = 'Thời tiết ở ' + location + ' có nhiệt đồ là ' + data.main.temp_min;
+        var text = 'Thời tiết ở ' + location + ' có nhiệt đồ là ' + data.main.temp + '\n'
+            + 'Nhiệt độ trong khoảng ' + data.main.temp_min + ' đến ' + data.main.temp_max + '\n'
+            + 'Trời hiện tại: ' + data.weather.description;
         callback(null, text);
     });
 }
