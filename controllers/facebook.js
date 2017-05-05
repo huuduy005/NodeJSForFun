@@ -20,6 +20,25 @@ router.get('/', function (req, res) {
         res.send('Error, wrong validation token');
 });
 
+router.post('/test', function (req, res) {
+    var senderId = ' tem';
+    var lat = 10.819633,
+        long = 106.6337246;
+    maps.getCity(lat, long, function (err, city) {
+        if (err) {
+            console.log('Lấy tên thành phố bị lỗi')
+            return;
+        }
+        weather.get_weather(city, function (err, result) {
+            if (err) {
+                console.log('Lấy thông tin thời tiết bị lỗi');
+                return;
+            }
+            sendMessage(senderId, result);
+        })
+    });
+});
+
 //Nhận tin nhắn từ facebook
 router.post('/', function (req, res) {
     var entries = req.body.entry;
@@ -44,17 +63,18 @@ router.post('/', function (req, res) {
                             console.log(lat + '-' + long);
 
                             maps.getCity(lat, long, function (err, city) {
-                               if (err){
-                                   console.log('Lấy tên thành phố bị lỗi')
-                                   return;
-                               }
-                               weather.get_weather(city, function (err, result) {
-                                   if (err){
-                                       console.log('Lấy thông tin thời tiết bị lỗi');
-                                       return;
-                                   }
-                                   sendMessage(senderId, result);
-                               })
+                                if (err) {
+                                    console.log('Lấy tên thành phố bị lỗi')
+                                    return;
+                                }
+                                weather.get_weather(city, function (err, result) {
+                                    if (err) {
+                                        console.log('Lấy thông tin thời tiết bị lỗi');
+                                        return;
+                                    }
+                                    console.error('SENDER', senderId);
+                                    sendMessage(senderId, result);
+                                })
                             });
 
                             sendMessage(senderId, 'Vị trí của bạn (' + lat + ', ' + long + ')');
@@ -211,10 +231,10 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var dLat = deg2rad(lat2 - lat1);  // deg2rad below
     var dLon = deg2rad(lon2 - lon1);
     var a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        ;
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    ;
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c; // Distance in km
     return d;
