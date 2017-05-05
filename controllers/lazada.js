@@ -100,7 +100,7 @@ function get_data_link(link) {
     });
 }
 
-get_data_link(l);
+//get_data_link(l);
 // get_a_product(link_test);
 
 module.exports = router;

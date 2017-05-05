@@ -6,6 +6,9 @@ var request = require('request');
 var router = express.Router();
 var fs = require('fs');
 
+var maps = require('../services/maps.googleapis'),
+    weather = require('../services/openweathermap');
+
 var code_verify = 'hulo005';
 var mAccessToken = 'EAATnBNPBOEgBAAZBDnJg1dv3vbKvFal6Em5LLFP7mvGInJsHjUwcODngcVa15oIhTLO6wPOauq1cIeYiWYghvOBiVRWIscou2cigeFi3JiIe4WG8C206CqxprXKfblHRSoT52JBUxPczrasAUGkev7ZAxYD3D9PFOP5U3gQgZDZD';
 
@@ -39,6 +42,21 @@ router.post('/', function (req, res) {
                             var lat = attachment.payload.coordinates.lat;
                             var long = attachment.payload.coordinates.long;
                             console.log(lat + '-' + long);
+
+                            maps.getCity(lat, long, function (err, city) {
+                               if (err){
+                                   console.log('Lấy tên thành phố bị lỗi')
+                                   return;
+                               }
+                               weather.get_weather(city, function (err, result) {
+                                   if (err){
+                                       console.log('Lấy thông tin thời tiết bị lỗi');
+                                       return;
+                                   }
+                                   sendMessage(senderId, result);
+                               })
+                            });
+
                             sendMessage(senderId, 'Vị trí của bạn (' + lat + ', ' + long + ')');
                             sendBusAround(senderId, lat, long);
                         }
