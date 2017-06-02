@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://daneden.github.io/animate.css/animate.min.css">
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .overflow {
+            width: inherit;
+            margin: 0 0 2em 0;
+
+            /**
+             * Required properties to achieve text-overflow
+             */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+<div style="margin: 0 auto; width: 800px;">
+    <p>Enter path in the fields, then click "Submit" to upload image:</p>
+    <div style="display: table; margin: 0 auto; background: #039BE5; padding: 20px; border-radius: 10px;">
+        Path: <input id="path" type="text" name="path"><br>
+        <input id="file" type="file" name="userPhoto" onchange="encodeImageFileAsURL(this)"/><br>
+        <input id="override" type="checkbox">Ghi đè<br>
+        <button type="button" onclick="myFunction()">Submit</button>
+    </div>
+    <p id="mess"></p>
+    <p class="overflow" id="encodeImage"></p>
+    <span id="animationSandbox" style="display: block;" class="pulse">
+        <img id="image" src="">
+    </span>
+
+    <form ref='uploadForm'
+          id='uploadForm'
+          action='http://localhost:3000/uploadhd'
+          method='post'
+          encType="multipart/form-data">
+        <input type="file" name="sampleFile"/>
+        <input type='submit' value='Upload!'/>
+    </form>
+
+</div>
+
+
+<div id="updiv">
+    <form id="uploadFile" enctype="multipart/form-data">
+        <h3>Upload a file:</h3>
+        <input type="file" multiple name="fileToUpload" id="fileToUpload">
+        <input type="submit" id="submit" value="Upload" name="submit">
+    </form>
+
+    <!-- Response Output -->
+    <div class="info" style="display:none"></div>
+
+</div>
+
+<script>
+    $('#uploadFile').submit(function () {
+        event.preventDefault();
+        $("#updiv").fadeOut();
+        $.ajax(
+            {
+                url: "http://localhost:3000/uploadhd",
+                type: 'POST',
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log(data);
+                    $('.info').html(data);
+                    $('.info').show();
+                    $("#updiv").fadeIn();
+                }
+            });
+
+    });
+</script>
+
+<script>
+    function encodeImageFileAsURL(element) {
+        var file = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function () {
+//            console.log('RESULT', reader.result.replace(/data:image\/(.*);base64,/, ''));
+            $('#encodeImage').html(reader.result.replace(/data:(.*);base64,/, ''));
+        };
+        reader.readAsDataURL(file);
+    }
+    function myFunction() {
+        var bucketName = $('#bucketName').val();
+        var path = $('#path').val();
+        var overrride = $('#override').is(':checked');
+        var files = document.getElementById('file').files;
+        if (files.length > 0) {
+            var reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onload = function () {
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "http://localhost:3000/api/minio/base64",
+                    "method": "POST",
+                    "headers": {
+                        "content-type": "application/x-www-form-urlencoded"
+                    },
+                    "data": {
+                        "path": path,
+                        "name": files[0].name,
+                        "override": overrride,
+                        "data": reader.result.replace(/data:(.*);base64,/, '')
+                    }
+                };
+                console.log(settings);
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    $('#mess').text(response.mess + '|' + response.path);
+                    $('#image').attr("src", '/hd/' + response.path);
+                });
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }
+    }
+</script>
+</body>
+</html>

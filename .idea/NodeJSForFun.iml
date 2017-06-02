@@ -8,5 +8,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="angular-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="angular-material-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="angular-environment-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="angular-es-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="angular-ui-router-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="angular" level="application" />
+    <orderEntry type="library" name="angular-animate" level="application" />
+    <orderEntry type="library" name="angular-aria" level="application" />
+    <orderEntry type="library" name="angular-messages" level="application" />
+    <orderEntry type="library" name="angular-material" level="application" />
+    <orderEntry type="library" name="jquery-2.2.4" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
 </module>

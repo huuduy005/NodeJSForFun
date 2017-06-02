@@ -10,6 +10,8 @@ var cheerio = require('cheerio');
 var facebook = require('../controllers/facebook');
 var tiki = require('../controllers/tiki');
 var lazada = require('../controllers/lazada');
+var vexere = require('../controllers/vexere');
+var minio = require('../controllers/minio');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -21,6 +23,10 @@ router.use('/facebook', facebook);
 router.use('/tiki', tiki);
 
 router.use('/lazada', lazada);
+
+router.use('/vexere', vexere);
+
+router.use('/minio', minio);
 
 /*Tăng lượt view cho Yum*/
 function getRandomInt(min, max) {

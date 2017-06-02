@@ -5,6 +5,7 @@ var express = require('express');
 var request = require('request');
 var router = express.Router();
 var fs = require('fs');
+var fb_chat = require('./facebook-chat');
 
 var maps = require('../services/maps.googleapis'),
     weather = require('../services/openweathermap');
@@ -204,6 +205,9 @@ function sendBusAround(senderId, lat, long) {
                 }
                 console.log("The file was saved!");
             });
+            //
+            fb_chat.sendListTemplate(senderId, ele)
+            //
             request({
                 url: 'https://graph.facebook.com/v2.6/me/messages',
                 qs: {

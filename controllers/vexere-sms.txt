@@ -1,0 +1,13 @@
+{%
+set first_ticket = booking.first
+%}
+
+{% if first_ticket.status == 3 %}
+    Vexere da HUY {{booking.canceled_seats.split(",").length}} ve tu {{first_ticket.from_area.name}} - {{first_ticket.to_area.name}} chuyen {{first_ticket.pickup_date | date("H:i d/m/Y")}}. Khach: {{first_ticket.customer.name}} - {{first_ticket.customer.phone}},{% if first_ticket.pickup_info %} don tai: {{first_ticket.pickup_info}},{% elseif first_ticket.transfer_info %} trung chuyen tai: {{first_ticket.transfer_info}}{% endif %}. Xin cam on.
+{% else %}
+    {% if booking.payment_type_id == 1 %}
+        Vexere da dat {{booking.amount}} ve, {% for x in booking.tickets %}{{ String(x.seat_code).split("|")[0] }}, {% endfor %}tu {{first_ticket.from_area.name}} - {{first_ticket.to_area.name}} chuyen {{first_ticket.pickup_date | date("H:i d/m/Y")}}. Khach: {{first_ticket.customer.name}} - {{first_ticket.customer.phone}},{% if first_ticket.pickup_info %} don tai: {{first_ticket.pickup_info}},{% elseif first_ticket.transfer_info %} trung chuyen tai: {{first_ticket.transfer_info}},{% endif %} nha xe thu tien. Xin cam on.
+    {% else %}
+        Vexere da dat {{booking.amount}} ve, {% for x in booking.tickets %}{{ String(x.seat_code).split("|")[0] }}, {% endfor %}tu {{first_ticket.from_area.name}} - {{first_ticket.to_area.name}} chuyen {{first_ticket.pickup_date | date("H:i d/m/Y")}}. Khach: {{first_ticket.customer.name}} - {{first_ticket.customer.phone}},{% if first_ticket.pickup_info %} don tai: {{first_ticket.pickup_info}},{% elseif first_ticket.transfer_info %} trung chuyen tai: {{first_ticket.transfer_info}},{% endif %} Vexere da thanh toan. Xin cam on.
+    {% endif %}
+{% endif %}

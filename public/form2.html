@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/form.css">
+</head>
+<body ng-app="inputBasicDemo" ng-cloak>
+<div style="background: rgb(225, 245, 254); position: relative">
+    <div class="freebirdFormviewerViewFormBanner freebirdHeaderMast"></div>
+    <div style="margin: 0 auto;width: 670px;/* position: absolute; */top: 5px;/* padding: 10px; */margin-top: -300px;">
+        <div ng-controller="AppCtrl" layout="column" ng-cloak>
+            <md-content style="margin-top: 150px;">
+                <div class="freebirdFormviewerViewAccentBanner freebirdAccentBackground"></div>
+                <h1 class="row">Khảo sát chất lượng dịch vụ đặt vé xe online tại VeXeRe.com</h1>
+                <div class="row info">
+                    <h2>Thông tin đơn hàng</h2>
+                    <div class="itemInfo">
+                        <strong>Nhà xe:</strong> {{form.nhaxe}}
+                    </div>
+                    <div class="itemInfo">
+                        <strong>Tuyến đường</strong> {{form.route}}
+                    </div>
+                    <div class="itemInfo">
+                        <strong>Ngày khởi hành:</strong> {{form.depTime}} {{form.depDate}}
+                    </div>
+                </div>
+                <form name="projectForm">
+                    <div class="row">
+                        <h2>Mã vé</h2>
+                        <md-input-container md-no-float class="md-block">
+                            <input name="ticketID" ng-model="form.ticketID" placeholder="Mã vé">
+                        </md-input-container>
+                    </div>
+                    <div class="row">
+                        <h2>Số điện thoại</h2>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="form.phoneNumber" placeholder="Số điện thoại">
+                        </md-input-container>
+                    </div>
+                    <div class="row">
+                        <h2>Tuyến đường</h2>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="form.route" placeholder="Tuyến đường">
+                        </md-input-container>
+                    </div>
+                    <div class="row">
+                        <h2>Ngày khởi hành</h2>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="form.depDate" placeholder="Ngày khởi hành">
+                        </md-input-container>
+                    </div>
+                    <div class="row">
+                        <h2>Giờ khởi hành</h2>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="form.depTime" placeholder="Giờ khởi hành">
+                        </md-input-container>
+                    </div>
+                    <div class="row">
+                        <h2>Hãy đánh giá trải nghiệm của bạn khi sử dụng trang web VeXeRe.com:</h2>
+                        <div layout="row" layout-align="center">
+                            <div class="gridRow">1 - Rất khó sử dụng</div>
+                            <div class="gridRow">2</div>
+                            <div class="gridRow">3</div>
+                            <div class="gridRow">4</div>
+                            <div class="gridRow">5 - Rất dễ sử dụng</div>
+                        </div>
+                        <md-radio-group ng-model="form.exp">
+                            <div layout="row" layout-align="center center">
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="1"></md-radio-button>
+                                </div>
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="2"></md-radio-button>
+                                </div>
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="3"></md-radio-button>
+                                </div>
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="4"></md-radio-button>
+                                </div>
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="5"></md-radio-button>
+                                </div>
+                            </div>
+                        </md-radio-group>
+                    </div>
+                    <div class="row">
+                        <h2>Bạn có thể nêu lý do</h2>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="form.expText" placeholder="Lý do">
+                        </md-input-container>
+                    </div>
+                    <div class="row">
+                        <h2>Hãy đánh giá trải nghiệm của bạn với bộ phận Chăm Sóc Khách Hàng của VeXeRe: *</h2>
+                        <div layout="row" layout-align="center">
+                            <div class="gridRow">1 - Rất tệ</div>
+                            <div class="gridRow">2</div>
+                            <div class="gridRow">3</div>
+                            <div class="gridRow">4</div>
+                            <div class="gridRow">5 - Rất tốt</div>
+                        </div>
+                        <md-radio-group ng-model="form.cs">
+                            <div layout="row" layout-align="center center">
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="1"></md-radio-button>
+                                </div>
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="2"></md-radio-button>
+                                </div>
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="3"></md-radio-button>
+                                </div>
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="4"></md-radio-button>
+                                </div>
+                                <div class="gridRow" layout="row" layout-align="center center">
+                                    <md-radio-button value="5"></md-radio-button>
+                                </div>
+                            </div>
+                        </md-radio-group>
+                    </div>
+                    <div class="row">
+                        <h2>Bạn có thể nêu lý do</h2>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="form.csText" placeholder="Lý do">
+                        </md-input-container>
+                    </div>
+                    <div class="row">
+                        <h2>Bạn có góp ý gì cho VeXeRe để chúng tôi có thể cung cấp những trải nghiệm, dịch vụ tốt
+                            hơn?</h2>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="form.feedback" placeholder="Góp ý">
+                        </md-input-container>
+                    </div>
+                    <div class="row">
+                        <h2>Bạn biết đến VeXeRe.com từ kênh thông tin nào? *</h2>
+                        <md-list-item ng-repeat="item in knowFrom">
+                            <md-checkbox ng-model="item.checked" ng-click="checkBox(item)"></md-checkbox>
+                            <p> {{ item.name }} </p>
+                        </md-list-item>
+                    </div>
+                    <div class="row" layout="row" layout-wrap>
+                        <md-button class="md-raised md-primary" ng-click="submitForm()">Gửi</md-button>
+                    </div>
+                </form>
+            </md-content>
+        </div>
+        <div style="margin: 20px;" layout="column">
+            <div class="freebirdFormviewerViewFooterDisclaimer freebirdFormviewerViewFooterNoTextDecoration freebirdDisclaimerColor">
+                This content is neither created nor endorsed by Google. <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSc8CTVRCVPjte9Zwon5zTPeuJoyyLTlwLbTO4jWPzSNNmB3nw/reportabuse?source=https://docs.google.com/forms/d/e/1FAIpQLSc8CTVRCVPjte9Zwon5zTPeuJoyyLTlwLbTO4jWPzSNNmB3nw/viewform?usp%3Dsf_link">Report
+                Abuse</a> - <a href="http://www.google.com/accounts/TOS">Terms of Service</a> - <a
+                    href="http://www.google.com/google-d-s/terms.html">Additional Terms</a></div>
+            <div class="freebirdFormviewerViewFooterImageContainer freebirdFormviewerViewFooterPageBreak"><a
+                    href="//www.google.com/forms/about/?utm_source=product&amp;utm_medium=forms_logo&amp;utm_campaign=forms"><img
+                    src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_dark_clr_74x24px.svg"
+                    alt="Google" height="24px" width="74px">&nbsp;<span
+                    class="freebirdCommonViewProductnameLockupText">Forms</span></a></div>
+        </div>
+    </div>
+</div>
+
+<!-- Angular Material requires Angular.js Libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

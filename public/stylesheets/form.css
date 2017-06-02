@@ -1,0 +1,54 @@
+.inputdemoErrors .inputErrorsApp {
+    min-height: 48px;
+}
+
+.inputdemoErrors md-input-container > p {
+    font-size: 0.8em;
+    text-align: left;
+    width: 100%;
+}
+
+md-input-container {
+    margin: 5px 0;
+}
+
+h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+body {
+    background-color: rgb(45, 98, 121);
+}
+
+.row {
+    padding: 10px 35px;
+}
+
+.itemInfo {
+    margin: 15px;
+}
+
+.gridRow {
+    width: 90px;
+    margin: 10px;
+    text-align: center;
+}
+
+.freebirdAccentBackground {
+    background-color: rgb(128, 216, 255);
+    color: rgba(0, 0, 0, 1);
+}
+
+.freebirdFormviewerViewAccentBanner {
+    height: 8px;
+}
+
+.freebirdHeaderMast {
+    background-color: rgb(3, 169, 244);
+    color: rgba(0, 0, 0, 1);
+}
+
+.freebirdFormviewerViewFormBanner {
+    height: 278px;
+}
