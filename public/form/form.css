@@ -84,6 +84,14 @@ md-radio-button.md-default-theme .md-on, md-radio-button .md-on {
     background-color: rgba(3, 169, 244, 0.87);
 }
 
-.require {
-    color: #db4437;
+
+body, body > div {
+    width: fit-content;
+}
+
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+    body, body > div {
+        width: auto;
+    }
 }
