@@ -9,18 +9,19 @@
     <meta charset="UTF-8">
     <title>Khảo sát chất lượng dịch vụ đặt vé xe online tại VeXeRe.com</title>
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1">-->
-	<meta name="viewport" content="width=device-width">
+	<!--<meta name="viewport" content="width=device-width">-->
+    <meta name="viewport" content="width=device-width">
     <!-- Angular Material style sheet -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     @*<link rel="stylesheet" href="form.css">*@
     <link rel="stylesheet" href="~/Content/vxr/css/Survey/form.css?v=@deployVersion">
 </head>
-<body ng-app="inputBasicDemo" ng-cloak>
-    <div style="background: rgb(225, 245, 254); position: relative">
+<body ng-app="inputBasicDemo" ng-cloak style="width: fit-content;">
+    <div style="background: rgb(225, 245, 254); position: relative; width: min-content;">
         <div class="freebirdFormviewerViewFormBanner freebirdHeaderMast"></div>
         <div style="margin: 0 auto;width: 670px;/* position: absolute; */top: 5px;/* padding: 10px; */margin-top: -300px;">
-            <div ng-controller="AppCtrl" layout="column" ng-cloak>
+            <div ng-controller="AppCtrl" layout="column" ng-cloak layout-xs="row">
                 <md-content style="margin-top: 150px;">
                     <div class="freebirdFormviewerViewAccentBanner freebirdAccentBackground"></div>
                     <h1 class="row">Khảo sát chất lượng dịch vụ đặt vé xe online tại VeXeRe.com</h1>

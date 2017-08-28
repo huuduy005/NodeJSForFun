@@ -121,7 +121,8 @@ function parsesParams2(query) {
     var re = /([^&=\?]+)=?([^&]*)/g;
     var decodeRE = /\+/g;
     var decode = function (str) {
-        return decodeURIComponent(str.replace(decodeRE, " "));
+        // return decodeURIComponent(str.replace(decodeRE, " "));
+        return decodeURI(str.replace(decodeRE, " "));
     };
     var params = {}, e;
     while (e = re.exec(query)) {
