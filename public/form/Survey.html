@@ -1,0 +1,189 @@
+﻿<!-- @{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+    var deployVersion = System.Configuration.ConfigurationManager.AppSettings["DeployVersion"];
+} -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="robots" content="noindex" />
+    <meta charset="UTF-8">
+    <title>Khảo sát chất lượng dịch vụ đặt vé xe online tại VeXeRe.com</title>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1">-->
+	<meta name="viewport" content="width=device-width">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    @*<link rel="stylesheet" href="form.css">*@
+    <link rel="stylesheet" href="~/Content/vxr/css/Survey/form.css?v=@deployVersion">
+</head>
+<body ng-app="inputBasicDemo" ng-cloak>
+    <div style="background: rgb(225, 245, 254); position: relative">
+        <div class="freebirdFormviewerViewFormBanner freebirdHeaderMast"></div>
+        <div style="margin: 0 auto;width: 670px;/* position: absolute; */top: 5px;/* padding: 10px; */margin-top: -300px;">
+            <div ng-controller="AppCtrl" layout="column" ng-cloak>
+                <md-content style="margin-top: 150px;">
+                    <div class="freebirdFormviewerViewAccentBanner freebirdAccentBackground"></div>
+                    <h1 class="row">Khảo sát chất lượng dịch vụ đặt vé xe online tại VeXeRe.com</h1>
+                    <div class="row info">
+                        <h2>Thông tin đơn hàng</h2>
+                        <div class="itemInfo">
+                            <strong>Nhà xe:</strong> {{form.company}}
+                        </div>
+                        <div class="itemInfo">
+                            <strong>Tuyến đường</strong> {{form.route}}
+                        </div>
+                        <div class="itemInfo">
+                            <strong>Ngày khởi hành:</strong> {{form.depTime}} {{form.depDate}}
+                        </div>
+                    </div>
+                    <form name="projectForm">
+                        <div class="row">
+                            <h2>
+                                Hãy đánh giá trải nghiệm của bạn khi sử dụng trang web VeXeRe.com:<span class="require"
+                                                                                                        aria-hidden="true">*</span>
+                            </h2>
+                            <div layout="row" layout-align="center">
+                                <div class="gridRow">1 - Rất khó sử dụng</div>
+                                <div class="gridRow">2</div>
+                                <div class="gridRow">3</div>
+                                <div class="gridRow">4</div>
+                                <div class="gridRow">5 - Rất dễ sử dụng</div>
+                            </div>
+                            <md-radio-group ng-model="form.exp" ng-required="true">
+                                <div layout="row" layout-align="center center">
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="1"></md-radio-button>
+                                    </div>
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="2"></md-radio-button>
+                                    </div>
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="3"></md-radio-button>
+                                    </div>
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="4"></md-radio-button>
+                                    </div>
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="5"></md-radio-button>
+                                    </div>
+                                </div>
+                            </md-radio-group>
+                            <div class="require" ng-show="require.exp">
+                                Trường này cần có.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h2>Bạn có thể nêu lý do</h2>
+                            <md-input-container md-no-float class="md-block">
+                                <input ng-model="form.expText" placeholder="Lý do">
+                            </md-input-container>
+                        </div>
+                        <div class="row">
+                            <h2>
+                                Hãy đánh giá trải nghiệm của bạn với bộ phận Chăm Sóc Khách Hàng của VeXeRe: <span class="require" aria-hidden="true">*</span>
+                            </h2>
+                            <div layout="row" layout-align="center">
+                                <div class="gridRow">1 - Rất tệ</div>
+                                <div class="gridRow">2</div>
+                                <div class="gridRow">3</div>
+                                <div class="gridRow">4</div>
+                                <div class="gridRow">5 - Rất tốt</div>
+                            </div>
+                            <md-radio-group ng-model="form.cs" ng-required="true">
+                                <div layout="row" layout-align="center center">
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="1"></md-radio-button>
+                                    </div>
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="2"></md-radio-button>
+                                    </div>
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="3"></md-radio-button>
+                                    </div>
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="4"></md-radio-button>
+                                    </div>
+                                    <div class="gridRow" layout="row" layout-align="center center">
+                                        <md-radio-button value="5"></md-radio-button>
+                                    </div>
+                                </div>
+                            </md-radio-group>
+                            <div class="require" ng-show="require.cs">
+                                Trường này cần có.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h2>Bạn có thể nêu lý do</h2>
+                            <md-input-container md-no-float class="md-block">
+                                <input ng-model="form.csText" placeholder="Lý do">
+                            </md-input-container>
+                        </div>
+                        <div class="row">
+                            <h2>
+                                Bạn có góp ý gì cho VeXeRe để chúng tôi có thể cung cấp những trải nghiệm, dịch vụ tốt
+                                hơn?
+                            </h2>
+                            <md-input-container md-no-float class="md-block">
+                                <input ng-model="form.feedback" placeholder="Góp ý">
+                            </md-input-container>
+                        </div>
+                        <div class="row">
+                            <h2>
+                                Bạn biết đến VeXeRe.com từ kênh thông tin nào? <span class="require"
+                                                                                     aria-hidden="true">*</span>
+                            </h2>
+                            <md-list-item ng-repeat="item in knowFrom">
+                                <md-checkbox ng-model="item.checked"></md-checkbox>
+                                <p> {{ item.name }} </p>
+                            </md-list-item>
+                            <div class="require" ng-show="require.knowForm">
+                                Trường này cần có.
+                            </div>
+                        </div>
+                        <div class="row" layout="row" layout-wrap>
+                            <md-button class="md-raised md-primary" ng-click="submitForm()">Gửi</md-button>
+                        </div>
+                    </form>
+                </md-content>
+            </div>
+            <div class="footer" style="margin: 20px;" layout="column">
+                <div layout="row">
+                    <a itemprop="url" class="footer-logo" href="/" title="Cổng thông tin vé xe khách lớn nhất Việt Nam">
+                        <img itemprop="logo" src="https://vexere.com/Content/vxr/images/Home/icon-vxr.svg" alt=""
+                             style="width: 55px; height: 55px;" data-pin-nopin="true">
+                    </a>
+                    <div layout="column" style="text-align: justify;">
+                        <p>Bản quyền © 2017 thuộc về <span itemprop="name">VeXeRe.Com</span></p>
+                        <p>
+                            Tên công ty: CÔNG TY CỔ PHẦN VEXERE<br>
+                            Địa chỉ đăng ký kinh doanh: 8C Chữ Đồng Tử, Phường 7, Quận Tân Bình, Thành Phố Hồ Chí Minh, Việt
+                            Nam
+                        </p>
+                        <p>
+                            Địa chỉ:
+                            <a href="https://goo.gl/maps/ED2ndGo1Sn52" title="Xem bản đồ" target="_blank">
+                                <span itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
+                                    <span itemprop="streetAddress">Lầu M, Khu B, Tòa nhà Sài Gòn Town, 83/16 Thoại Ngọc Hầu, Phường Hòa Thạnh</span>, <span itemprop="addressLocality">Quận Tân Phú</span>, <span itemprop="addressRegion">TP. Hồ Chí Minh</span>, <span itemprop="addressCountry">Việt Nam</span>
+                                </span>
+                            </a>
+                            <br>
+                            Giấy chứng nhận ĐKKD số 0312387105 do Sở KH&amp; ĐT TP. Hồ Chí Minh cấp lần đầu ngày 25/7/2013
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    @*<script src="main.js"></script>*@
+    <script src="~/Content/vxr/js/Survey/main.js?v=@deployVersion"></script>
+</body>
+</html>
