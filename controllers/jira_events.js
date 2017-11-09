@@ -53,7 +53,7 @@ function issue_created(data) {
                     }
                 ],
                 "footer": "Thời gian",
-                "ts": Math.floor(data.timestamp/1000),
+                "ts": Math.floor(data.timestamp/1000)
             }
         ]
     };
@@ -76,7 +76,7 @@ function issue_updated(data) {
             var changelog = data.changelog;
             action_text = data.user.displayName + " đã có thao tác cập nhật:\n";
             var c = changelog.items.map(function (item) {
-                return " + " + item.field + ": Từ *'" + (item.fromString || "`null`") +"'* sang *'" + (item.toString || "`null`") + "'*"
+                return " + " + item.field + ": Từ *'" + (item.fromString || " `null` ") +"'* sang *'" + (item.toString || " `null` ") + "'*"
             });
             action_text += c.join('\n');
             break;
@@ -119,7 +119,7 @@ function issue_updated(data) {
                     }
                 ],
                 "footer": "Thời gian",
-                "ts": Math.floor(data.timestamp/1000),
+                "ts": Math.floor(data.timestamp/1000)
             }
         ]
     };
