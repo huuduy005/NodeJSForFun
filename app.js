@@ -9,6 +9,7 @@ var fs = require('fs');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
+var webhook = require('./routes/webhook');
 
 /*Kết nối database*/
 // load mongoose package
@@ -133,6 +134,7 @@ app.use('/hd', express.static(path.join(diskE, 'data')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/api', api);
+app.use('/webhook', webhook);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
