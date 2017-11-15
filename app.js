@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 
+var config = require('./config');
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
@@ -13,18 +15,17 @@ var webhook = require('./routes/webhook');
 
 /*Kết nối database*/
 // load mongoose package
-// var mongoose = require('mongoose');
-// // Use native Node promises
-// mongoose.Promise = global.Promise;
-// var db = mongoose.connect('mongodb://localhost/HD');
-// db
-//     .then(function () {
-//         console.log('Kết nối thành công đến');
-//     })
-//     .catch(function (err) {
-//         console.error(err);
-//     });
-
+var mongoose = require('mongoose');
+// Use native Node promises
+mongoose.Promise = global.Promise;
+var db = mongoose.connect(config.database);
+db
+    .then(function () {
+        console.log('Kết nối thành công đến' + config.database);
+    })
+    .catch(function (err) {
+        console.error(err);
+    });
 var app = express();
 
 // view engine setup
