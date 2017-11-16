@@ -1,4 +1,5 @@
 const request = require("request");
+const moment = require('moment');
 const Tokens = require('../../../models/token');
 
 const NAME_SERVICE = 'MICROSOFT';
@@ -16,7 +17,15 @@ function getToken() {
                 });
             }
             if (token && token.access_token) {
-                resolve("Bearer " + token.access_token);
+                if (moment().unix() < token.ext_time) {
+                    resolve("Bearer " + token.access_token);
+                } else {
+                    getNewToken().then((body) => {
+                        resolve("Bearer " + body.access_token);
+                    }).catch(() => {
+                        reject();
+                    });
+                }
             } else {
                 getNewToken().then((body) => {
                     resolve("Bearer " + body.access_token);
@@ -49,6 +58,7 @@ function getNewToken() {
             }
             /*TODO tính toán lưu lại thông tin token*/
             body = JSON.parse(body);
+            body.ext_time = moment().unix() + (body.expires_in - 30);
             Tokens.findOneAndUpdate({name_service: NAME_SERVICE}, {$set: body}, function (err, doc) {
                 if (err) {
                     console.log('Lỗi lưu token')
