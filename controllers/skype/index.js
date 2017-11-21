@@ -20,9 +20,9 @@ function receive(req) {
     let conversation = body.conversation;
 
     if (regex_test_cmd.test(text)) {
-        progressCommand(user, conversation, text);
+        progressCommand(user, conversation, text, body);
     } else {
-        sendToUser(user, conversation, '');
+        sendToUser(user, conversation, '', body);
     }
 }
 
@@ -86,11 +86,11 @@ function sendToSkype(data) {
     })
 }
 
-function sendToUser(user, conversation, text) {
+function sendToUser(user, conversation, text, data) {
     token.getToken().then((token) => {
         const options = {
             method: 'POST',
-            url: 'https://smba.trafficmanager.net/apis/v3/conversations/' + conversation.id + '/activities/',
+            url: (data.serviceUrl ? data.serviceUrl : 'https://smba.trafficmanager.net/apis') + '/v3/conversations/' + conversation.id + '/activities/',
             headers:
                 {
                     'content-type': 'application/json',
@@ -106,6 +106,8 @@ function sendToUser(user, conversation, text) {
                 },
             json: true
         };
+
+        console.log('ToUserWithUrl:', options.url);
 
         request(options, function (error, response, body) {
             if (error) {
@@ -142,7 +144,7 @@ function genContentToRequest(id, toId, token, text) {
     }
 }
 
-function progressCommand(user, conversation, text) {
+function progressCommand(user, conversation, text, data) {
     let m;
     if ((m = regex_command.exec(text)) !== null) {
         UsersModel.findOne({
@@ -160,7 +162,7 @@ function progressCommand(user, conversation, text) {
                         return;
                     }
                     console.log('Thêm user thành công', result);
-                    sendToUser(user, conversation, 'Tạo thông tin thành công\n\n' + m[1] + '-' + user.id);
+                    sendToUser(user, conversation, 'Tạo thông tin thành công\n\n' + m[1] + '-' + user.id, data);
                 })
             } else {
                 user_r.id_skype = user.id;
@@ -172,11 +174,11 @@ function progressCommand(user, conversation, text) {
                         return;
                     }
                     console.log('Cập nhật thành công');
-                    sendToUser(user, conversation, 'Cập nhật thông tin thành công\n\n' + m[1] + '-' + user.id);
+                    sendToUser(user, conversation, 'Cập nhật thông tin thành công\n\n' + m[1] + '-' + user.id, data);
                 })
             }
         });
     } else {
-        sendToUser(user, conversation, 'Command sai! Bồi bỗ Dev để được hướng dẫn :D');
+        sendToUser(user, conversation, 'Command sai! Bồi bỗ Dev để được hướng dẫn :D', data);
     }
 }
