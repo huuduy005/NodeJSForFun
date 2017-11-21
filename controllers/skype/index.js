@@ -111,7 +111,7 @@ function sendToUser(user, conversation, text) {
             if (error) {
                 console.log('Lỗi cmnr send to user');
             }
-            console.log(body);
+            console.log('SEND TO USER', body);
         });
     })
 }
