@@ -1,14 +1,15 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // TODO cần bổ sung thêm các trường thông tin
-var tokenSchema = new Schema({
+let tokenSchema = new Schema({
     name_service: String,
     token_type: String,
     expires_in: Number,
     ext_expires_in: Number,
-    access_token: String
+    access_token: String,
+    ext_time: Number
 });
 
-var Tokens = mongoose.model('Tokens', tokenSchema);
+let Tokens = mongoose.model('Tokens', tokenSchema);
 module.exports = Tokens;

@@ -1,19 +1,24 @@
-var express = require('express');
-var router = express.Router();
-var request = require('request');
-var jira_event= require('../controllers/jira_events');
-var skype = require('../controllers/skype');
+const express = require('express');
+const router = express.Router();
+const request = require('request');
+const jira_event= require('../controllers/jira_events');
+const skype = require('../controllers/skype');
 
 /* GET users listing. */
 router.post('/', function (req, res, next) {
-    var param = req.query;
-    var body = req.body;
+    let param = req.query;
+    let body = req.body;
     sendToSlack(param, body);
+    skype.sendToSkype(body);
     res.send('OK');
 });
 
 router.post('/skype', function (req, res, next) {
+    res.send('OK');
     skype.receive(req);
+});
+
+router.get('/skype', function (req, res, next) {
     res.send('OK')
 })
 
@@ -21,17 +26,13 @@ module.exports = router;
 
 
 function sendToSlack(param, data) {
+    let webhookEvent = data.webhookEvent.split(':')[1] || '';
 
-    var webhookEvent = data.webhookEvent.split(':')[1] || '';
-
-    var createBody = jira_event[webhookEvent];
+    let createBody = jira_event[webhookEvent];
 
     if (createBody) {
-        var body = createBody(data);
-
-        console.log(body)
-        skype.sendToSkype(genTextForSkype(body));
-        var options = {
+        let body = createBody(data);
+        let options = {
             method: 'POST',
             url: 'https://hooks.slack.com/services/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',
             headers: {'content-type': 'application/json'},
@@ -40,9 +41,10 @@ function sendToSlack(param, data) {
         };
 
         request(options, function (error, response, body) {
-            if (error) throw new Error(error);
-            console.log('Gửi thành công!');
-            console.log(body);
+            if (error) {
+                console.error(new Error(error))
+            }
+            console.log('Slack: SEND OK!');
         });
     }
 }
