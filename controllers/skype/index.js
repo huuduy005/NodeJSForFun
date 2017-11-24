@@ -118,9 +118,41 @@ function sendToUser(user, conversation, text, data) {
     })
 }
 
+function sendTextToSkype(text, users) {
+
+    return new Promise((resolve, reject) => {
+        let watchers = _.uniq(users);//TODO: Lọc các id bị trùng
+        resolve(watchers);
+    }).then((watchers) => {
+        console.log('Thành phần liên quan GIT: ', watchers);
+        //TODO: Lấy thông tin id_skpe của các watchers
+        if (text) {
+            return getListToSend(watchers);
+        } else {
+            return null;
+        }
+    }).then((ids_skype) => {
+        if (!ids_skype)
+            return;
+        //TODO: Gửi mess cho từng id_skype
+        ids_skype.forEach((id_skype) => {
+            if (!id_skype) return;
+            token.getToken()
+                .then((token) => {
+                    let options = genContentToRequest(id_skype, id_skype, token, text);
+                    request(options, function (error, response, body) {
+                        if (error) console.log('Skype - Lỗi gửi cho user: ', id_skype);
+                        else console.log('Skype: SEND OK', body);
+                    });
+                })
+        });
+    })
+}
+
 module.exports = {
     receive: receive,
-    sendToSkype
+    sendToSkype,
+    sendTextToSkype
 };
 
 function genContentToRequest(id, toId, token, text) {
