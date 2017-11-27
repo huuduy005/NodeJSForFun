@@ -11,25 +11,25 @@ function progressData(data) {
     let author = pullRequest.author;
 
     let reviewers = (pullRequest.reviewers || []).map((user) => {
-        users.push(user.name);
-        return user.displayName;
+        users.push(user.user.name);
+        return user.user.displayName;
     });
 
     switch (eventKey) {
         case 'pr:merged':
-            actionText = `[GIT]${actor.displayName} merged pull request [#${pullRequest.id}: ${pullRequest.title}](https://git.vexere.net/projects/API/repos/vxrapi/pull-requests/${pullRequest.id}/overview)`;
+            actionText = `[GIT] **${actor.displayName}** merged pull request [#${pullRequest.id}: ${pullRequest.title}](https://git.vexere.net/projects/API/repos/vxrapi/pull-requests/${pullRequest.id}/overview)`;
             actionText += `\n\n${fromRef.displayId} => ${toRef.displayId}`;
             users.push(author.user.name);
             break;
         case 'pr:opened':
-            actionText = `[GIT]${actor.displayName} opened pull request [#${pullRequest.id}: ${pullRequest.title}](https://git.vexere.net/projects/API/repos/vxrapi/pull-requests/${pullRequest.id}/overview)`;
+            actionText = `[GIT] **${actor.displayName}** opened pull request [#${pullRequest.id}: ${pullRequest.title}](https://git.vexere.net/projects/API/repos/vxrapi/pull-requests/${pullRequest.id}/overview)`;
             actionText += `\n\n**Reviewers**: ${reviewers.join(',')}`;
             actionText += `\n\n${fromRef.displayId} => ${toRef.displayId}`;
             break;
         case 'pr:comment:added':
             let comment = data.comment;
-            actionText = `[GIT]${actor.displayName} commented on pull reques [#${pullRequest.id}: ${pullRequest.title}](https://git.vexere.net/projects/API/repos/vxrapi/pull-requests/${pullRequest.id}/overview)`;
-            actionText += `\n\n${comment.text}`;
+            actionText = `[GIT] **${actor.displayName}** commented on pull request [#${pullRequest.id}: ${pullRequest.title}](https://git.vexere.net/projects/API/repos/vxrapi/pull-requests/${pullRequest.id}/overview)`;
+            actionText += `\n\n**${comment.text}**`;
             actionText += `\n\n${fromRef.displayId} => ${toRef.displayId}`;
             break;
         default:
