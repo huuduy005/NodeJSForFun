@@ -4,6 +4,7 @@ const request = require('request');
 const jira_event = require('../controllers/jira_events');
 const skype = require('../controllers/skype');
 const git = require('../controllers/git');
+const ps = require('../controllers/ps');
 const config = require('config');
 
 /* GET users listing. */
@@ -32,6 +33,11 @@ router.get('/skype', function (req, res, next) {
 router.all('/git', (req, res, next) => {
     git.receive(req);
     res.send('OK');
+});
+
+router.all('/ps', (req, res, next) => {
+    ps.receive(req);
+    res.send('OK')
 });
 
 module.exports = router;
