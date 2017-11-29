@@ -10,6 +10,7 @@ const index = require('./routes/index');
 const users = require('./routes/users');
 const api = require('./routes/api');
 const webhook = require('./routes/webhook');
+const test = require('./routes/test');
 
 /*Kết nối database*/
 // load mongoose package
@@ -42,6 +43,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/api', api);
 app.use('/webhook', webhook);
+app.use('/test', test);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

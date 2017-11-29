@@ -4,13 +4,18 @@ const request = require('request');
 const jira_event = require('../controllers/jira_events');
 const skype = require('../controllers/skype');
 const git = require('../controllers/git');
+const config = require('config');
 
 /* GET users listing. */
 router.post('/', function (req, res, next) {
     let param = req.query;
     let body = req.body;
-    sendToSlack(param, body);
-    skype.sendToSkype(body);
+    if (config.IS_SEND_SLACK) {
+        sendToSlack(param, body);
+    }
+    if (config.IS_SEND_SKYPE) {
+        skype.sendToSkype(body);
+    }
     res.send('OK');
 });
 
