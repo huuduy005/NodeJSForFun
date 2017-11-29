@@ -13,9 +13,9 @@ router.post('/', function (req, res, next) {
     if (config.IS_SEND_SLACK) {
         sendToSlack(param, body);
     }
-    if (config.IS_SEND_SKYPE) {
+    // if (config.IS_SEND_SKYPE) {
         skype.sendToSkype(body);
-    }
+    // }
     res.send('OK');
 });
 
