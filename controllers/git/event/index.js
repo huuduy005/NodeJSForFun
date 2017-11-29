@@ -4,11 +4,14 @@ function progressData(data) {
     let actionText = '';
 
     let actor = data.actor;
-    users.push(actor.name);
     let pullRequest = data.pullRequest;
+
     let fromRef = pullRequest.fromRef;
     let toRef = pullRequest.toRef;
     let author = pullRequest.author;
+
+    users.push(actor.name);
+    users.push(author.name);
 
     let reviewers = (pullRequest.reviewers || []).map((user) => {
         users.push(user.user.name);
@@ -30,6 +33,11 @@ function progressData(data) {
             let comment = data.comment;
             actionText = `[GIT] **${actor.displayName}** commented on pull request [#${pullRequest.id}: ${pullRequest.title}](https://git.vexere.net/projects/API/repos/vxrapi/pull-requests/${pullRequest.id}/overview)`;
             actionText += `\n\n**${comment.text}**`;
+            actionText += `\n\n${fromRef.displayId} => ${toRef.displayId}`;
+            break;
+        case 'pr:declined':
+            actionText = `[GIT] **${actor.displayName}** declined pull request [#${pullRequest.id}: ${pullRequest.title}](https://git.vexere.net/projects/API/repos/vxrapi/pull-requests/${pullRequest.id}/overview)`;
+            actionText += `\n\n**Reviewers**: ${reviewers.join(',')}`;
             actionText += `\n\n${fromRef.displayId} => ${toRef.displayId}`;
             break;
         default:
