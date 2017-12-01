@@ -1,4 +1,5 @@
 const event = require('./eventType');
+const moment = require('moment');
 
 function createActionText(data) {
     let webhookEvent = data.webhookEvent.split(':')[1] || '';
@@ -8,7 +9,7 @@ function createActionText(data) {
     let issue = data.issue;
     let fields = issue.fields;
     let issue_text = `[[${issue.key}] - ${fields.summary}](https://jira.vexere.net/browse/${issue.key})\n\n`;
-    let issue_link = `[**VIEW ISSUE**](https://jira.vexere.net/browse/${issue.key})`;
+    let issue_link = `[**VIEW ISSUE**](https://jira.vexere.net/browse/${issue.key}) - Time: ${moment(data.timestamp).zone(-420).format('HH:mm DD-MM-YY')}`;
 
     let result = `${issue_text}\n\n${actionText}\n\n${issue_link}`;
     return actionText ? result : '';

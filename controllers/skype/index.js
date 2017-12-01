@@ -41,7 +41,7 @@ function sendToSkype(data) {
                 resolve(watchers);
             });
         } else {
-            resolve([]);
+            resolve([assignee.name]);
         }
     }).then((watchers) => {
         //TODO: Nếu là comment thì lấy id_jira người được tags vào
