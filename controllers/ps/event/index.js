@@ -15,7 +15,7 @@ function progressData(data) {
     actionText += `\n\n**Labels: ** ${labels}`;
     actionText += `\n\n**Description:** ${fields.description}`;
 
-    actionText += `\n\n[**VIEW ISSUE**](https://jira.vexere.net/browse/${issue.key}) - Time: ${moment(timestamp).zone(-420).format('HH:mm DD-MM-YY')}`;
+    actionText += `\n\n[**VIEW ISSUE**](https://jira.vexere.net/browse/${issue.key}) - Time: ${moment(timestamp).utcOffset(420).format('HH:mm DD-MM-YY')}`;
 
     return actionText;
 }
