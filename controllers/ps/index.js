@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const skype = require('../skype');
 const jira_api = require('../skype/utils/jire_api');
 const progressData = require('./event');
