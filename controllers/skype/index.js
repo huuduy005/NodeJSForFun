@@ -8,7 +8,7 @@ const jira_api = require('./utils/jire_api');
 
 const regex = /\/\/([A-Z]*)/g;
 
-const regex_command = /\/\/SET JIRA_ID=([A-Za-z\._\-@#]+)/g;
+const regex_command = /\/\/SET JIRA_ID=(.*)/g;
 const regex_test_cmd = /^\/\/SET/;
 const regex_jira_id = /\[\~([A-Za-z.]+)\]/g;
 
@@ -177,12 +177,20 @@ function genContentToRequest(id, toId, token, text) {
 }
 
 function progressCommand(user, conversation, text, data) {
-    console.log(JSON.stringify(conversation));
+    // console.log(JSON.stringify(conversation));
     let m;
     if ((m = regex_command.exec(text)) !== null) {
         UsersModel.findOne({
             id_skype: user.id
         }, (err, user_r) => {
+            const regex_name = /<.*>(.*)<\/.*>/g;
+            let name = m[1];
+            let n;
+            if ((n = regex_name.exec(name)) !== null) {
+                name = n[1];
+            }
+            m[1] = name;
+            console.log('name JIRA', m[1]);
             if (!user_r) {
                 let n_user = new UsersModel({
                     name: user.name,
