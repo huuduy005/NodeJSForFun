@@ -177,6 +177,7 @@ function genContentToRequest(id, toId, token, text) {
 }
 
 function progressCommand(user, conversation, text, data) {
+    console.log(JSON.stringify(conversation));
     let m;
     if ((m = regex_command.exec(text)) !== null) {
         UsersModel.findOne({
