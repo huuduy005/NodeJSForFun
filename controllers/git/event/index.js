@@ -42,10 +42,10 @@ function progressData (data) {
             actionText += `\n\n**${comment.text}**`;
             actionText += `\n\n${fromRef.displayId} => ${toRef.displayId}`;
             /* Quét người dùng trong comment */
-            let comment = data.text;
-            if (comment) {
+            let text = data.text;
+            if (text) {
                 let m;
-                while ((m = regex_jira_id.exec(comment || '')) !== null) {
+                while ((m = regex_jira_id.exec(text || '')) !== null) {
                     // This is necessary to avoid infinite loops with zero-width matches
                     if (m.index === regex_jira_id.lastIndex) {
                         regex_jira_id.lastIndex++;
