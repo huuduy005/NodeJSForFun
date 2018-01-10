@@ -3,6 +3,7 @@ const progressData = require('./event');
 
 function receive(req) {
     let data = req.body;
+    console.log(JSON.stringify(data));
     try {
         let data_result = progressData(data);
         if (data_result.actionText) {
