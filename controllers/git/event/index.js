@@ -1,4 +1,6 @@
+const request = require("request");
 const regex_jira_id = /@\\"(.*)\\"/g;
+
 function progressData (data) {
     let eventKey = data.eventKey;
     let users = [];
@@ -67,4 +69,100 @@ function progressData (data) {
     return {actionText, users};
 }
 
-module.exports = progressData;
+function refChange (data) {
+    return new Promise(((resolve, reject) => {
+        let repository = data.repository;
+        let project = repository.project;
+        let changes = data.changes;
+
+        let _data = {
+            projectName: project.name,
+            reposSlug: repository.slug
+        };
+        let list = [];
+        for (let change of changes) {
+            list.push(getMoreDataCommit(Object.assign({commitId: change.toHash}, _data, change)))
+        }
+
+        Promise.all(list).then(changesData => {
+            resolve(changesData);
+        }).catch(err => {
+            resolve(changes)
+        });
+    })).then(changesData => {
+        if (!changesData.length) return {actionText: '', users: []};
+        let actor = data.actor;
+        let repository = data.repository;
+        let actionTextList = [];
+        let users = ['duy.doan', 'phong.bui', 'khanh.nguyen'];
+
+        let actionText = `[GIT] **${actor.displayName}** vừa có thao tác chỉnh sửa trên ${repository.name}\n\n`;
+
+        for (let item of changesData) {
+            let dataCommit = item.data;
+            let changesCommit = item.changes;
+            let text = '';
+
+            text += `[Link](https://git.vexere.net/projects/API/repos/vxrapi/commits/${dataCommit.displayId})\n\n`;
+            text += `**Type**: ${item.type} - (${item.type == 'ADD' ? 'Tạo branch' : 'Commit'})\n\n`;
+            text += `==>Các thao tác chỉnh sửa sau:\n\n`;
+
+            for (let aChange of changesCommit.values) {
+                text += `Type: ${aChange.type} - \t\tFile: ${aChange.path.name}\n\n`;
+            }
+
+            actionTextList.push(text);
+        }
+
+        actionText += actionTextList.join('\n\n');
+        return {actionText, users}
+    });
+}
+
+function getChanges (obj) {
+    return new Promise(((resolve, reject) => {
+        if (!(obj.projectName && obj.reposSlug && obj.commitId)) return resolve(null);
+
+        let options = {
+            method: 'GET',
+            url: `https://git.vexere.net/rest/api/1.0/projects/${obj.projectName}/repos/${obj.reposSlug}/commits/${obj.commitId}/changes`,
+            headers: {Authorization: 'Basic Ym9vdC5qaXJhOlRob25nMTIz'}
+        };
+
+        request(options, function (error, response, body) {
+            if (error) return resolve(null);
+            resolve(JSON.parse(body));
+        });
+    }));
+}
+
+function getDataCommit (obj) {
+    return new Promise(((resolve, reject) => {
+        if (!(obj.projectName && obj.reposSlug && obj.commitId)) return resolve(null);
+        let options = {
+            method: 'GET',
+            url: `https://git.vexere.net/rest/api/1.0/projects/${obj.projectName}/repos/${obj.reposSlug}/commits/${obj.commitId}`,
+            headers: {Authorization: 'Basic Ym9vdC5qaXJhOlRob25nMTIz'}
+        };
+
+        request(options, function (error, response, body) {
+            if (error) return resolve(null);
+            resolve(JSON.parse(body));
+        });
+    }));
+}
+
+function getMoreDataCommit (obj) {
+    return new Promise(((resolve, reject) => {
+        let dataQuery = obj;
+        Promise.all([getDataCommit(dataQuery), getChanges(dataQuery)]).then(results => {
+            obj.data = results[0];
+            obj.changes = results[1];
+            resolve(obj);
+        }).catch(err => {
+            resolve(obj);
+        })
+    }));
+}
+
+module.exports = {progressData, refChange};
