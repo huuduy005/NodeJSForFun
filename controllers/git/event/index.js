@@ -94,7 +94,7 @@ function refChange (data) {
         let actor = data.actor;
         let repository = data.repository;
         let actionTextList = [];
-        let users = ['duy.doan', 'phong.bui', 'khanh.nguyen'];
+        let users = ['duy.doan', 'phong.bui'];
 
         let actionText = `[GIT] **${actor.displayName}** vừa có thao tác chỉnh sửa trên ${repository.name}\n\n`;
 
