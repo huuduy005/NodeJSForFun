@@ -6,8 +6,7 @@ let UserSchema = new Schema({
     name: String,
     id_jira: String,
     id_slack: String,
-    id_skype: String,
-    id_firebase: String
+    id_skype: String
 });
 
 let Users = mongoose.model('UsersInfo', UserSchema);

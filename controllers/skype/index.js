@@ -76,8 +76,7 @@ function sendToSkype(data) {
             if (!id_skype) return;
             token.getToken()
                 .then((token) => {
-                    let options = genContentToRequest(id_skype, id_skype.skype, token, actionText);
-                    sendNotiDesk(id_skype.firebase, actionText);
+                    let options = genContentToRequest(id_skype, id_skype, token, actionText);
                     request(options, function (error, response, body) {
                         if (error) console.log('Skype - Lỗi gửi cho user: ', id_skype);
                         else console.log('Skype: SEND OK', body);
@@ -85,36 +84,6 @@ function sendToSkype(data) {
                 })
         });
     })
-}
-
-function sendNotiDesk (id, text) {
-    if (!id) return;
-    let options = {
-        method: 'POST',
-        url: 'https://fcm.googleapis.com/fcm/send',
-        headers:
-            {
-                Authorization: 'key=AAAAhGDdTSg:APA91bE0TqpD_2SdhYoVEV2kTENxstVn5VW8vQMHX-CWsnV3_POVtP1w0iuOez0yV4goEUGxTcJuQoo8w4-P3CS4UuLMTTKbJNM-DmQFUwSzHJ8eaLwuUlX4BfvVX-sjzV8bagLaQLNc',
-                'Content-Type': 'application/json'
-            },
-        body:
-            {
-                notification:
-                    {
-                        title: 'NotiJira',
-                        body: text,
-                        click_action: 'https://jira.vexere.com'
-                    },
-                to: id
-            },
-        json: true
-    };
-
-    request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-        console.log(body);
-    });
-
 }
 
 function sendToUser(user, conversation, text, data) {
@@ -170,7 +139,7 @@ function sendTextToSkype(text, users) {
             if (!id_skype) return;
             token.getToken()
                 .then((token) => {
-                    let options = genContentToRequest(id_skype.skype, id_skype, token, text);
+                    let options = genContentToRequest(id_skype, id_skype, token, text);
                     request(options, function (error, response, body) {
                         if (error) console.log('Skype - Lỗi gửi cho user: ', id_skype);
                         else console.log('Skype: SEND OK', body);
