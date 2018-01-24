@@ -20,10 +20,10 @@ function getListToSend(ids) {
                 resolve([defaultChanel]);
                 return;
             }
-            let ids_skype = users.map(user => user.id_skype);
+            let ids_skype = users.map(user => ({skype: user.id_skype, firebase: user.id_firebase}));
 
             //TODO: Mặc đinh thêm channel Noti vào danh sách gửi
-            ids_skype.push(defaultChanel);
+            ids_skype.push({skype: defaultChanel});
 
             resolve(ids_skype);
         })
