@@ -13,7 +13,7 @@ const regex_test_cmd = /^\/\/SET/;
 const regex_jira_id = /\[\~([A-Za-z.]+)\]/g;
 
 //TODO: Nhận thông tin từ skype
-function receive(req) {
+function receive (req) {
     let body = req.body;
     let text = body.text;
     let user = body.from;
@@ -26,7 +26,7 @@ function receive(req) {
     }
 }
 
-function sendToSkype(data) {
+function sendToSkype (data) {
     let issue = data.issue;
     let watches = issue.fields.watches;
     let actionText = createActionText(data);
@@ -68,10 +68,11 @@ function sendToSkype(data) {
         } else {
             return null;
         }
-    }).then((ids_skype) => {
-        if (!ids_skype)
+    }).then((users) => {
+        if (!users)
             return;
         //TODO: Gửi mess cho từng id_skype
+        let ids_skype = _.compact(users.map(user => user.id_skype));
         ids_skype.forEach((id_skype) => {
             if (!id_skype) return;
             token.getToken()
@@ -86,7 +87,7 @@ function sendToSkype(data) {
     })
 }
 
-function sendToUser(user, conversation, text, data) {
+function sendToUser (user, conversation, text, data) {
     token.getToken().then((token) => {
         const options = {
             method: 'POST',
@@ -118,7 +119,7 @@ function sendToUser(user, conversation, text, data) {
     })
 }
 
-function sendTextToSkype(text, users) {
+function sendTextToSkype (text, users) {
 
     return new Promise((resolve, reject) => {
         let watchers = _.uniq(users);//TODO: Lọc các id bị trùng
@@ -131,10 +132,11 @@ function sendTextToSkype(text, users) {
         } else {
             return null;
         }
-    }).then((ids_skype) => {
-        if (!ids_skype)
+    }).then((users) => {
+        if (!users)
             return;
         //TODO: Gửi mess cho từng id_skype
+        let ids_skype = _.compact(users.map(user => user.id_skype));
         ids_skype.forEach((id_skype) => {
             if (!id_skype) return;
             token.getToken()
@@ -155,7 +157,7 @@ module.exports = {
     sendTextToSkype
 };
 
-function genContentToRequest(id, toId, token, text) {
+function genContentToRequest (id, toId, token, text) {
     return {
         method: 'POST',
         url: 'https://smba.trafficmanager.net/apis/v3/conversations/' + id + '/activities/',
@@ -176,7 +178,7 @@ function genContentToRequest(id, toId, token, text) {
     }
 }
 
-function progressCommand(user, conversation, text, data) {
+function progressCommand (user, conversation, text, data) {
     // console.log(JSON.stringify(conversation));
     let m;
     if ((m = regex_command.exec(text)) !== null) {
