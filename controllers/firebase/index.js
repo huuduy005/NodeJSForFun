@@ -24,6 +24,7 @@ function sendNotiDesk (id, data) {
 
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
+        console.log('firebase', body)
         console.log(`Send Noti Desk OK:\n${id}\n${data.text}-${data.link}`);
     });
 }
