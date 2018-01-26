@@ -11,6 +11,7 @@ const users = require('./routes/users');
 const api = require('./routes/api');
 const webhook = require('./routes/webhook');
 const test = require('./routes/test');
+const firebase = require('./routes/firebase');
 
 /*Kết nối database*/
 // load mongoose package
@@ -28,7 +29,7 @@ let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: '50mb'}));
@@ -44,6 +45,7 @@ app.use('/users', users);
 app.use('/api', api);
 app.use('/webhook', webhook);
 app.use('/test', test);
+app.use('/firebase', firebase);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
