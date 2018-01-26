@@ -1,6 +1,10 @@
 let request = require("request");
 
 function sendNotiDesk (id, data) {
+    if (!id){
+        console.log('id firebase rỗng')
+        return;
+    }
     let options = {
         method: 'POST',
         url: 'https://fcm.googleapis.com/fcm/send',
@@ -17,7 +21,7 @@ function sendNotiDesk (id, data) {
                         body: data.text,
                         click_action: data.link
                     },
-                to: 'dH0yYMQ357E:APA91bEiACyxV-6iAQDDQ2XeKBGYbMzeFhiN0C7hRR1b9Q5K9uE-8CUiLT6Dp4vnWczO_rladPcfJplWxMo8oOPMNzqKkPyJ2b0RoP1JhjEkzOs5N_K89CYVoMo8Q8lsE4W4ECtc89Cu'
+                to: id
             },
         json: true
     };
