@@ -40,9 +40,11 @@ if ('serviceWorker' in navigator) {
                     contentType: 'application/json',
                     success: (data) => {
                         console.log('Success ', data);
+                        alert('Thành công: ' + data.message);
                     },
                     error: (err) => {
                         console.log('Error ', err);
+                        alert('LỖI: ' + err);
                     }
                 })
             })

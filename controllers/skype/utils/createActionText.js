@@ -14,6 +14,7 @@ function createActionText(data) {
     let result = `${issue_text}\n\n${actionText}\n\n${issue_link}`;
     return {
         actionText: actionText ? result : '',
+        bodyText: actionText,
         issueText: `[${issue.key}] - ${fields.summary}`,
         issueLink: `https://jira.vexere.net/browse/${issue.key}`
     };

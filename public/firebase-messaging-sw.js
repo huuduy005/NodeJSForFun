@@ -36,7 +36,7 @@ messaging.setBackgroundMessageHandler((payload) => {
     const notificationTitle = data.title;
     const notificationOptions = {
         body: data.body,
-        // icon: '/static/images/5/icons/android-icon-96x96.png',
+        icon: '/images/jira.png',
         actions: [
             {action: 'confirmAttendance', title: '👍 Confirm attendance'},
             {action: 'cancel', title: '👎 Not coming'}

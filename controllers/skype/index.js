@@ -92,7 +92,7 @@ function sendToSkype (data) {
             if (!id_firebase) return;
             let obj = {
                 title: actionObj.issueText,
-                text: actionObj.actionText,
+                text: actionObj.bodyText,
                 link: actionObj.issueLink
             };
             firebase.sendNotiDesk(id_firebase, obj);
