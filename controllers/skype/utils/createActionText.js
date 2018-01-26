@@ -12,7 +12,11 @@ function createActionText(data) {
     let issue_link = `[**VIEW ISSUE**](https://jira.vexere.net/browse/${issue.key}) - Time: ${moment(data.timestamp).utcOffset(420).format('HH:mm DD-MM-YY')}`;
 
     let result = `${issue_text}\n\n${actionText}\n\n${issue_link}`;
-    return actionText ? result : '';
+    return {
+        actionText: actionText ? result : '',
+        issueText: `[${issue.key}] - ${fields.summary}`,
+        issueLink: `https://jira.vexere.net/browse/${issue.key}`
+    };
 }
 
 module.exports = createActionText;

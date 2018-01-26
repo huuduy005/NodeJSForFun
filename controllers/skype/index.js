@@ -5,12 +5,13 @@ const UsersModel = require('../../models/user');
 const createActionText = require('./utils/createActionText');
 const getListToSend = require('./utils/users');
 const jira_api = require('./utils/jire_api');
+const firebase = require('../firebase');
 
 const regex = /\/\/([A-Z]*)/g;
 
 const regex_command = /\/\/SET JIRA_ID=(.*)/g;
 const regex_test_cmd = /^\/\/SET/;
-const regex_jira_id = /\[\~([A-Za-z.]+)\]/g;
+const regex_jira_id = /\[\~([A-Za-z.@]+)\]/g;
 
 //TODO: Nhận thông tin từ skype
 function receive (req) {
@@ -29,7 +30,8 @@ function receive (req) {
 function sendToSkype (data) {
     let issue = data.issue;
     let watches = issue.fields.watches;
-    let actionText = createActionText(data);
+    let actionObj = createActionText(data);
+    let actionText = actionObj.actionText;
 
     new Promise((resolve, reject) => {
         //TODO: Lấy thông tin các watchers (ids_jira)
@@ -83,6 +85,17 @@ function sendToSkype (data) {
                         else console.log('Skype: SEND OK', body);
                     });
                 })
+        });
+        //TODO: gửi Noti Desk
+        let ids_firebase = _.compact(users.map(user => user.id_firebase));
+        ids_firebase.forEach((id_firebase) => {
+            if (!id_firebase) return;
+            let obj = {
+                title: actionObj.issueText,
+                text: actionObj.actionText,
+                link: actionObj.issueLink
+            };
+            firebase.sendNotiDesk(id_firebase, obj);
         });
     })
 }
