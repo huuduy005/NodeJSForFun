@@ -19,6 +19,7 @@ function sendNotiDesk (id, data) {
                     {
                         title: data.title,
                         body: data.text,
+                        icon: './images/jira.png',
                         click_action: data.link
                     },
                 to: id
