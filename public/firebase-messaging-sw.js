@@ -34,6 +34,8 @@ messaging.setBackgroundMessageHandler((payload) => {
     const data = JSON.parse(payload.data.notification);
     console.log(data)
     const notificationTitle = data.title;
+    data.confirm = data.click_action;
+    data.decline = 'https://jira.vexere.net/secure/Dashboard.jspa';
     const notificationOptions = {
         body: data.body,
         icon: '/images/jira.png',
