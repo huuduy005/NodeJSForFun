@@ -18,6 +18,28 @@ self.addEventListener('install', (event) => {
     console.log('Service worker installed');
 });
 
+self.addEventListener('push', function (event) {
+    console.log('Received push');
+    var notificationTitle = 'Hello';
+    var notificationOptions = {
+        body: 'Thanks for sending this push msg.',
+        icon: './images/jira.png',
+        badge: './images/badge-72x72.png',
+        tag: 'simple-push-demo-notification',
+        data: {
+            url: 'https://developers.google.com/web/fundamentals/getting-started/push-notifications/'
+        }
+    };
+
+    if (event.data) {
+        var dataText = event.data.text();
+        notificationTitle = 'Received Payload';
+        notificationOptions.body = 'Push data: \'' + dataText + '\'';
+    }
+
+    event.waitUntil(Promise.all([self.registration.showNotification(notificationTitle, notificationOptions), self.analytics.trackEvent('push-received')]));
+});
+
 self.addEventListener('notificationclick', (event) => {
     // Event actions derived from event.notification.data from data received
     var eventURL = event.notification.data;
@@ -38,7 +60,7 @@ messaging.setBackgroundMessageHandler((payload) => {
     data.decline = 'https://jira.vexere.net/secure/Dashboard.jspa';
     const notificationOptions = {
         body: data.body,
-        icon: '/images/jira.png',
+        icon: './images/jira.png',
         actions: [
             {action: 'confirmAttendance', title: '👍 Confirm attendance'},
             {action: 'cancel', title: '👎 Not coming'}
