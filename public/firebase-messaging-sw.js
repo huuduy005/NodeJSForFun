@@ -32,12 +32,13 @@ self.addEventListener('push', function (event) {
     };
 
     if (event.data) {
+        console.log(event.data.text())
         var dataText = event.data.text();
         notificationTitle = 'Received Payload';
         notificationOptions.body = 'Push data: \'' + dataText + '\'';
     }
 
-    event.waitUntil(Promise.all([self.registration.showNotification(notificationTitle, notificationOptions), self.analytics.trackEvent('push-received')]));
+    // event.waitUntil(Promise.all([self.registration.showNotification(notificationTitle, notificationOptions), self.analytics.trackEvent('push-received')]));
 });
 
 self.addEventListener('notificationclick', (event) => {
