@@ -108,7 +108,23 @@ function refChange (data) {
             text += `==>Các thao tác chỉnh sửa sau:\n\n`;
 
             for (let aChange of changesCommit.values) {
-                text += `Type: ${aChange.type} - \t\tFile: ${aChange.path.name}\n\n`;
+                let result = {};
+                for (let item of aChange) {
+                    let parent = item.path.parent;
+                    if (!result[parent]) result[parent] = [];
+                    result[parent].push({
+                        name: item.path.name,
+                        link: item.links.self[0].href,
+                        type : item.type
+                    });
+                }
+                for (let item in result) {
+                    let d = result[item];
+                    text += `Folder: ${item}\n\n`;
+                    for (let file of d) {
+                        text += `\t\t -[${file.name}](${file.link}) (${file.type})`
+                    }
+                }
             }
 
             actionTextList.push(text);
