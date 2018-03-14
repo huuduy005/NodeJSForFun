@@ -111,7 +111,7 @@ function refChange (data) {
 
             for (let aChange of changesCommit.values) {
                 let path = aChange.path;
-                if (!fileChanges[path.parent]) fileChanges[path.parent]= [];
+                if (!fileChanges[path.parent]) fileChanges[path.parent] = [];
                 fileChanges[path.parent].push({
                     name: path.name,
                     link: aChange.links.self[0].href,
@@ -137,10 +137,12 @@ function refChange (data) {
 function getChanges (obj) {
     return new Promise(((resolve, reject) => {
         if (!(obj.projectName && obj.reposSlug && obj.commitId)) return resolve(null);
+        let fromHash = obj.fromHash;
+        if (+fromHash == 0) fromHash = '';
 
         let options = {
             method: 'GET',
-            url: `https://git.vexere.net/rest/api/1.0/projects/${obj.projectName}/repos/${obj.reposSlug}/commits/${obj.commitId}/changes?since=${obj.fromHash}`,
+            url: `https://git.vexere.net/rest/api/1.0/projects/${obj.projectName}/repos/${obj.reposSlug}/commits/${obj.commitId}/changes?since=${fromHash}`,
             headers: {Authorization: 'Basic Ym9vdC5qaXJhOlRob25nMTIz'}
         };
 
