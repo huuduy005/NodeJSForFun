@@ -120,9 +120,9 @@ function refChange (data) {
             }
             for (let item in fileChanges) {
                 let d = fileChanges[item];
-                text += `Folder: ${item}\n\n`;
+                text += `Folder: **${item}**\n\n`;
                 for (let file of d) {
-                    text += `\t\t -[${file.name}](${file.link}) (${file.type})`
+                    text += `\t\t - [${file.name}](${file.link}) **${file.type}**`
                 }
             }
 
