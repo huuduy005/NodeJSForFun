@@ -107,23 +107,22 @@ function refChange (data) {
             text += `**Type**: ${item.type} - (${item.type == 'ADD' ? 'Tạo branch' : 'Commit'})\n\n`;
             text += `==>Các thao tác chỉnh sửa sau:\n\n`;
 
+            let fileChanges = {};
+
             for (let aChange of changesCommit.values) {
-                let result = {};
-                for (let item of aChange) {
-                    let parent = item.path.parent;
-                    if (!result[parent]) result[parent] = [];
-                    result[parent].push({
-                        name: item.path.name,
-                        link: item.links.self[0].href,
-                        type : item.type
-                    });
-                }
-                for (let item in result) {
-                    let d = result[item];
-                    text += `Folder: ${item}\n\n`;
-                    for (let file of d) {
-                        text += `\t\t -[${file.name}](${file.link}) (${file.type})`
-                    }
+                let path = aChange.path;
+                if (!fileChanges[path.parent]) fileChanges[path.parent]= [];
+                fileChanges[path.parent].push({
+                    name: path.name,
+                    link: aChange.links.self[0].href,
+                    type: aChange.type
+                });
+            }
+            for (let item in fileChanges) {
+                let d = fileChanges[item];
+                text += `Folder: ${item}\n\n`;
+                for (let file of d) {
+                    text += `\t\t -[${file.name}](${file.link}) (${file.type})`
                 }
             }
 
@@ -141,7 +140,7 @@ function getChanges (obj) {
 
         let options = {
             method: 'GET',
-            url: `https://git.vexere.net/rest/api/1.0/projects/${obj.projectName}/repos/${obj.reposSlug}/commits/${obj.commitId}/changes`,
+            url: `https://git.vexere.net/rest/api/1.0/projects/${obj.projectName}/repos/${obj.reposSlug}/commits/${obj.commitId}/changes?since=${obj.fromHash}`,
             headers: {Authorization: 'Basic Ym9vdC5qaXJhOlRob25nMTIz'}
         };
 
@@ -182,3 +181,47 @@ function getMoreDataCommit (obj) {
 }
 
 module.exports = {progressData, refChange};
+
+
+let data = {
+    "eventKey": "repo:refs_changed",
+    "date": "2018-03-14T15:28:56+0700",
+    "actor": {
+        "name": "khanh.nguyen",
+        "emailAddress": "khanh.nguyen@vexere.com",
+        "id": 52,
+        "displayName": "Khánh Nguyễn",
+        "active": true,
+        "slug": "khanh.nguyen",
+        "type": "NORMAL"
+    },
+    "repository": {
+        "slug": "vxrapi",
+        "id": 13,
+        "name": "VXRAPI",
+        "scmId": "git",
+        "state": "AVAILABLE",
+        "statusMessage": "Available",
+        "forkable": true,
+        "project": {
+            "key": "API",
+            "id": 2,
+            "name": "API",
+            "description": "VeXeRe API",
+            "public": false,
+            "type": "NORMAL"
+        },
+        "public": false
+    },
+    "changes": [{
+        "ref": {"id": "refs/heads/develop", "displayId": "develop", "type": "BRANCH"},
+        "refId": "refs/heads/develop",
+        "fromHash": "ee5a9d4470ac11dafb5c9ce58e6b69d1812c85e1",
+        "toHash": "3ab83a07d46bf6146303c7fe350337a0559af83a",
+        "type": "UPDATE"
+    }]
+};
+
+refChange(data).then(result => {
+    console.log(result);
+});
