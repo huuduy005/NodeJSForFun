@@ -97,12 +97,12 @@ function refChange (data) {
         let users = ['duy.doan'];
 
         let actionText = `[GIT] **${actor.displayName}** vừa có thao tác chỉnh sửa trên ${repository.name}`;
-        actionText+= ` [(Link)](https://git.vexere.net/projects/API/repos/vxrapi/commits/${dataCommit.displayId})\n\n`;
 
         for (let item of changesData) {
             let dataCommit = item.data;
             let changesCommit = item.changes;
             let text = '';
+            text += ` [(Link)](https://git.vexere.net/projects/API/repos/vxrapi/commits/${dataCommit.displayId})\n\n`;
             text += `**Type**: ${item.type} - (${item.type == 'ADD' ? 'Tạo branch' : 'Commit'})\n\n`;
 
             let fileChanges = {};
@@ -227,7 +227,7 @@ refChange(data).then(result => {
 });
 
 function getEmotion (type) {
-    switch (type){
+    switch (type) {
         case 'MODIFY':
             return '<ss type ="smoking">(smoking)</ss>';
         case 'ADD':
