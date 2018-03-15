@@ -96,16 +96,14 @@ function refChange (data) {
         let actionTextList = [];
         let users = ['duy.doan'];
 
-        let actionText = `[GIT] **${actor.displayName}** vừa có thao tác chỉnh sửa trên ${repository.name}\n\n`;
+        let actionText = `[GIT] **${actor.displayName}** vừa có thao tác chỉnh sửa trên ${repository.name}`;
+        actionText+= ` [(Link)](https://git.vexere.net/projects/API/repos/vxrapi/commits/${dataCommit.displayId})\n\n`;
 
         for (let item of changesData) {
             let dataCommit = item.data;
             let changesCommit = item.changes;
             let text = '';
-
-            text += `[Link](https://git.vexere.net/projects/API/repos/vxrapi/commits/${dataCommit.displayId})\n\n`;
             text += `**Type**: ${item.type} - (${item.type == 'ADD' ? 'Tạo branch' : 'Commit'})\n\n`;
-            text += `==>Các thao tác chỉnh sửa sau:\n\n`;
 
             let fileChanges = {};
 
@@ -122,7 +120,7 @@ function refChange (data) {
                 let d = fileChanges[item];
                 text += `Folder: **${item}**\n\n`;
                 for (let file of d) {
-                    text += `\t\t - [${file.name}](${file.link}) **${file.type}**`
+                    text += `- ${getEmotion(file.type)} [${file.name}](${file.link}) **${file.type}**\n\n`
                 }
             }
 
@@ -227,3 +225,16 @@ let data = {
 refChange(data).then(result => {
     console.log(result);
 });
+
+function getEmotion (type) {
+    switch (type){
+        case 'MODIFY':
+            return '<ss type ="smoking">(smoking)</ss>';
+        case 'ADD':
+            return '<ss type ="inlove">(inlove)</ss>';
+        case 'DELETE':
+            return '<ss type ="bomb">(bomb)</ss>';
+        default:
+            return '<ss type ="drunk">(drunk)</ss>';
+    }
+}
