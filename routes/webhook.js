@@ -15,7 +15,7 @@ router.all('/*', function (req, res, next) {
         console.log('gửi')
         next()
     } else {
-        res.send(503, 'Limited');
+        res.status(503).send('Limited');
     }
 });
 
