@@ -11,10 +11,12 @@ const validate = require('validate.js');
 
 /* GET users listing. */
 router.all('/*', function (req, res, next) {
-    if (validate.contains([1, 9], _.random(0, 9))) {
-        console.log('gửi')
+    let num = _.random(0, 9);
+    if (validate.contains([1, 9], num)) {
+        console.log('gửi');
         next()
     } else {
+        console.log(num);
         res.status(503).send('Limited');
     }
 });
