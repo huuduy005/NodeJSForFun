@@ -6,8 +6,19 @@ const skype = require('../controllers/skype');
 const git = require('../controllers/git');
 const ps = require('../controllers/ps');
 const config = require('config');
+const _ = require('lodash');
+const validate = require('validate.js');
 
 /* GET users listing. */
+router.all('/*', function (req, res, next) {
+    if (validate.contains([1, 9], _.random(0, 9))) {
+        console.log('gửi')
+        next()
+    } else {
+        res.send(503, 'Limited');
+    }
+});
+
 router.post('/', function (req, res, next) {
     let param = req.query;
     let body = req.body;
@@ -15,7 +26,7 @@ router.post('/', function (req, res, next) {
         sendToSlack(param, body);
     }
     // if (config.IS_SEND_SKYPE) {
-        skype.sendToSkype(body);
+    skype.sendToSkype(body);
     // }
     res.send('OK');
 });
