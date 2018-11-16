@@ -1,5 +1,6 @@
 const request = require("request");
 const regex_jira_id = /@\\"(.*)\\"/g;
+const {git_template} = require('../template');
 
 function progressData (data) {
     let eventKey = data.eventKey;
@@ -91,19 +92,10 @@ function refChange (data) {
         });
     })).then(changesData => {
         if (!changesData.length) return {actionText: '', users: []};
-        let actor = data.actor;
-        let repository = data.repository;
-        let actionTextList = [];
         let users = ['duy.doan'];
 
-        let actionText = `[GIT] **${actor.displayName}** vừa có thao tác chỉnh sửa trên ${repository.name}`;
-
         for (let item of changesData) {
-            let dataCommit = item.data;
             let changesCommit = item.changes;
-            let text = '';
-            text += ` [(Link)](https://git.vexere.net/projects/API/repos/vxrapi/commits/${dataCommit.displayId})\n\n`;
-            text += `**Type**: ${item.type} - (${item.type == 'ADD' ? 'Tạo branch' : 'Commit'})\n\n`;
 
             let fileChanges = {};
 
@@ -116,19 +108,12 @@ function refChange (data) {
                     type: aChange.type
                 });
             }
-            for (let item in fileChanges) {
-                let d = fileChanges[item];
-                text += `Folder: **${item}**\n\n`;
-                for (let file of d) {
-                    text += `- ${getEmotion(file.type)} [${file.name}](${file.link}) **${file.type}**\n\n`
-                }
-            }
-
-            actionTextList.push(text);
+            item.fileChanges = fileChanges;
         }
 
-        actionText += actionTextList.join('\n\n');
-        return {actionText, users}
+        data.changesData = changesData;
+        let actionText = git_template(data);
+        return {actionText, users, data};
     });
 }
 
@@ -223,7 +208,7 @@ let data = {
 };
 
 refChange(data).then(result => {
-    console.log(result);
+    // console.log(result);
 });
 
 function getEmotion (type) {
