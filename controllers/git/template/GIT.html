@@ -1,0 +1,10 @@
+[GIT] **{{ actor.displayName }}** just modified **{{ repository.name }}**
+{% for change in changesData -%}
+**Type**: {{ change.type }} - (Commit) | [(Link)](https://git.vexere.net/projects/{{repository.project.name}}/repos/{{repository.slug}}/commits/{{ change.data.displayId }})
+{% for d in change.fileChanges -%}
+Folder: **{{loop.key}}**
+{% for file in d -%}
+{{file.type | emotionSkype}} - [{{ file.name }}]({{file.link}}) | **{{file.type}}**
+{%- endfor -%}
+{%- endfor -%}
+{%- endfor -%}
