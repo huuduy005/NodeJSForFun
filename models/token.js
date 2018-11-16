@@ -11,5 +11,4 @@ let tokenSchema = new Schema({
     ext_time: Number
 });
 
-let Tokens = mongoose.model('Tokens', tokenSchema);
-module.exports = Tokens;
+module.exports = mongoose.model('Tokens', tokenSchema);
