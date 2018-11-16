@@ -18,7 +18,7 @@ const firebase = require('./routes/firebase');
 const mongoose = require('mongoose');
 // Use native Node promises
 mongoose.Promise = global.Promise;
-let db = mongoose.connect(config.database);
+let db = mongoose.connect(config.database, { useNewUrlParser: true });
 db.then(function () {
     console.log('Kết nối thành công đến' + config.database);
 }).catch(function (err) {
