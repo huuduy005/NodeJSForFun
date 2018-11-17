@@ -81,7 +81,7 @@ var Minio = require('minio'),
 var minioClient = new Minio.Client({
     endPoint: '192.168.5.18',
     port: 9000,
-    secure: false,
+    useSSL: false,
     accessKey: 'GUP5Y25XG2PXGJV3SMDA',
     secretKey: '3FCn8APhcANflj0PaCk4P9ujwQHl9YbMga58T2W5'
 });

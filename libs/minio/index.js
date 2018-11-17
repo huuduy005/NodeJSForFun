@@ -8,7 +8,7 @@ var Q = require('q');
 var minioClient = new Minio.Client({
     endPoint: 'localhost',
     port: 9000,
-    secure: false,
+    useSSL: false,
     accessKey: 'GUP5Y25XG2PXGJV3SMDA',
     secretKey: '3FCn8APhcANflj0PaCk4P9ujwQHl9YbMga58T2W5'
 });
