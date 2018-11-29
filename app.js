@@ -4,8 +4,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const config = require('./config');
-
 const index = require('./routes/index');
 const users = require('./routes/users');
 const api = require('./routes/api');
@@ -13,17 +11,7 @@ const webhook = require('./routes/webhook');
 const test = require('./routes/test');
 const firebase = require('./routes/firebase');
 
-/*Kết nối database*/
-// load mongoose package
-const mongoose = require('mongoose');
-// Use native Node promises
-mongoose.Promise = global.Promise;
-let db = mongoose.connect(config.database, { useNewUrlParser: true });
-db.then(function () {
-    console.log('Kết nối thành công đến' + config.database);
-}).catch(function (err) {
-    console.error(err);
-});
+require('./mongoose')();
 
 let app = express();
 
