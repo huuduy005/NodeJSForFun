@@ -1,5 +1,6 @@
 const skype = require('../skype');
 const progress = require('./event');
+const _ = require('lodash');
 
 function receive(req) {
   let data = req.body;
