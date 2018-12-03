@@ -22,7 +22,8 @@ function receive(req) {
     } else {
       let data_result = progress.progressData(data);
       if (data_result.actionText) {
-        skype.sendTextToSkype(data_result.actionText, data_result.users);
+        let text = data_result.actionText.replace(regex, (matcher) =>  _.random(0, 9) < 6 ? matcher : _.sample(subst));
+        skype.sendTextToSkype(text, data_result.users);
       } else {
         console.log('Ko co send');
       }
