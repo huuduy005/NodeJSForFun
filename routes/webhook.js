@@ -35,7 +35,7 @@ router.post('/', function (req, res, next) {
 
 router.post('/skype', function (req, res, next) {
     res.send('OK');
-    console.log('Nhận thông tin từ skype', req.body);
+    console.log('Nhận thông tin từ skype', JSON.stringify(req.body));
     skype.receive(req);
 });
 

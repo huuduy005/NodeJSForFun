@@ -2,6 +2,7 @@ const request = require('request');
 const _ = require('lodash');
 const token = require('./utils/token');
 const UsersModel = require('../../models/user');
+const TempsModel = require('../../models/temp');
 const createActionText = require('./utils/createActionText');
 const getListToSend = require('./utils/users');
 const jira_api = require('./utils/jire_api');
@@ -12,6 +13,17 @@ const regex = /\/\/([A-Z]*)/g;
 const regex_command = /\/\/SET JIRA_ID=(.*)/g;
 const regex_test_cmd = /^\/\/SET/;
 const regex_jira_id = /\[\~([A-Za-z.@]+)\]/g;
+
+async function handleSkype(body) {
+    try {
+        let temp = new TempsModel({__source__: 'skype', ...body});
+        await temp.save();
+    } catch (e) {
+        console.warn('>> Skype: body ko phai object');
+        let temp = new TempsModel({__source__: 'skype', __data__: JSON.stringify(body)});
+        await temp.save();
+    }
+}
 
 //TODO: Nhận thông tin từ skype
 function receive (req) {
@@ -25,6 +37,7 @@ function receive (req) {
     } else {
         sendToUser(user, conversation, '', body);
     }
+    handleSkype(body)
 }
 
 function sendToSkype (data) {
