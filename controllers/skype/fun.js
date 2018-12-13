@@ -2,6 +2,8 @@ const token = require('./utils/token');
 const request = require('request');
 const _ = require('lodash');
 
+const TinhTeServices = require('../../services/tinhte');
+
 const SERVICE_URL = 'https://smba.trafficmanager.net/apis';
 
 function requestPromise(options) {
@@ -39,8 +41,14 @@ async function sendToUser(user_id, conversation_id, text, data) {
     return requestPromise(options);
 }
 
+const regex = / *tinhte */gm;
+
 async function handleFun(data) {
     let text = `Chào ${data.from.name} buê đuê :)) || Tao éo nói dc câu khác đâu (fingers)`;
+    let mess = data.text;
+    if (regex.test(mess)) {
+        text = await TinhTeServices.getLastThreads();
+    }
     sendToUser(data.from.id, data.conversation.id, text, data).then(res => console.log(JSON.stringify(res)));
 }
 
