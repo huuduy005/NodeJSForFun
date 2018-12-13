@@ -8,6 +8,8 @@ const getListToSend = require('./utils/users');
 const jira_api = require('./utils/jire_api');
 const firebase = require('../firebase');
 
+const handleFun = require('./fun');
+
 const regex = /\/\/([A-Z]*)/g;
 
 const regex_command = /\/\/SET JIRA_ID=(.*)/g;
@@ -35,7 +37,8 @@ function receive (req) {
     if (regex_test_cmd.test(text)) {
         progressCommand(user, conversation, text, body);
     } else {
-        sendToUser(user, conversation, '', body);
+        // sendToUser(user, conversation, '', body);
+        handleFun(body);
     }
     handleSkype(body)
 }
