@@ -3,6 +3,7 @@ const request = require('request');
 const _ = require('lodash');
 
 const TinhTeServices = require('../../services/tinhte');
+const YoutubeServices = require('../../services/youtube');
 
 const SERVICE_URL = 'https://smba.trafficmanager.net/apis';
 
@@ -42,12 +43,15 @@ async function sendToUser(user_id, conversation_id, text, data) {
 }
 
 const regex = / *tinhte */gm;
+const regex_youtube = / *(youtube|yt) */gm;
 
 async function handleFun(data) {
     let text = `Chào ${data.from.name} buê đuê :)) || Tao éo nói dc câu khác đâu (fingers)`;
     let mess = data.text;
     if (regex.test(mess)) {
         text = await TinhTeServices.getLastThreads();
+    } else if (regex_youtube.test(mess)){
+        text = await YoutubeServices.getTrending();
     }
     sendToUser(data.from.id, data.conversation.id, text, data).then(res => console.log(JSON.stringify(res)));
 }
