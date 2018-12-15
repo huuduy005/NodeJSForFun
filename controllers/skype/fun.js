@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 const TinhTeServices = require('../../services/tinhte');
 const YoutubeServices = require('../../services/youtube');
+const SimSimiServices = require('../../services/simsimi');
 
 const SERVICE_URL = 'https://smba.trafficmanager.net/apis';
 
@@ -52,6 +53,8 @@ async function handleFun(data) {
         text = await TinhTeServices.getLastThreads();
     } else if (regex_youtube.test(mess)){
         text = await YoutubeServices.getTrending();
+    } else {
+        text = await SimSimiServices.getText(data.text, data);
     }
     sendToUser(data.from.id, data.conversation.id, text, data).then(res => console.log(JSON.stringify(res)));
 }
