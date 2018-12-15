@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 const TinhTeServices = require('../../services/tinhte');
 const YoutubeServices = require('../../services/youtube');
-const SimSimiServices = require('../../services/simsimi');
+const SimSimiServices = require('../../services/simsimi/index');
 
 const SERVICE_URL = 'https://smba.trafficmanager.net/apis';
 

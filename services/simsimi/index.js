@@ -7,7 +7,8 @@ const getTextApi = require('./apis');
 const text_template = swig.compileFile(resolve(__dirname, './text.html'));
 
 async function getText(mess, data) {
-  let text = await getTextApi(mess);
+  let _mess = (mess || '').replace('Bibu ', '');
+  let text = await getTextApi(_mess);
   let user = data.from;
 
   return text_template({text, user});
@@ -17,4 +18,4 @@ module.exports = {
   getText
 };
 
-getText('chào').then(res => console.log(res));
+// getText('chào').then(res => console.log(res));
