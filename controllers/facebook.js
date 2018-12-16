@@ -11,6 +11,7 @@ var maps = require('../services/maps.googleapis'),
     weather = require('../services/openweathermap');
 
 const SimsimiServices = require('../services/simsimi/index');
+const TempsModel = require('../models/temp');
 
 var code_verify = 'hulo005';
 var mAccessToken = 'EAATnBNPBOEgBAAZBDnJg1dv3vbKvFal6Em5LLFP7mvGInJsHjUwcODngcVa15oIhTLO6wPOauq1cIeYiWYghvOBiVRWIscou2cigeFi3JiIe4WG8C206CqxprXKfblHRSoT52JBUxPczrasAUGkev7ZAxYD3D9PFOP5U3gQgZDZD';
@@ -41,6 +42,17 @@ router.post('/test', function (req, res) {
         })
     });
 });
+
+async function handleFB(body) {
+    try {
+        let temp = new TempsModel({__source__: 'fb', ...body});
+        await temp.save();
+    } catch (e) {
+        console.warn('>> FB: body ko phai object');
+        let temp = new TempsModel({__source__: 'fb', __data__: JSON.stringify(body)});
+        await temp.save();
+    }
+}
 
 //Nhận tin nhắn từ facebook
 router.post('/', function (req, res) {
@@ -89,6 +101,7 @@ router.post('/', function (req, res) {
         }
     }
     res.status(200).send("OK");
+    handleFB(req.body);
 });
 
 var mess = [];
