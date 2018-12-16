@@ -43,7 +43,7 @@ async function sendToUser(user_id, conversation_id, text, data) {
     return requestPromise(options);
 }
 
-const regex = / *tinhte */gm;
+const regex = / *(tinhte|tt) */gm;
 const regex_youtube = / *(youtube|yt) */gm;
 
 async function handleFun(data) {
@@ -54,7 +54,8 @@ async function handleFun(data) {
     } else if (regex_youtube.test(mess)){
         text = await YoutubeServices.getTrending();
     } else {
-        text = await SimSimiServices.getText(data.text, data);
+        let _mess = (data.text || '').replace('Bibu ', '');
+        text = await SimSimiServices.getText(_mess, data);
     }
     sendToUser(data.from.id, data.conversation.id, text, data).then(res => console.log(JSON.stringify(res)));
 }
