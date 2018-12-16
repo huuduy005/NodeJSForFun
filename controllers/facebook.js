@@ -10,6 +10,8 @@ var fb_chat = require('./facebook-chat');
 var maps = require('../services/maps.googleapis'),
     weather = require('../services/openweathermap');
 
+const SimsimiServices = require('../services/simsimi/index');
+
 var code_verify = 'hulo005';
 var mAccessToken = 'EAATnBNPBOEgBAAZBDnJg1dv3vbKvFal6Em5LLFP7mvGInJsHjUwcODngcVa15oIhTLO6wPOauq1cIeYiWYghvOBiVRWIscou2cigeFi3JiIe4WG8C206CqxprXKfblHRSoT52JBUxPczrasAUGkev7ZAxYD3D9PFOP5U3gQgZDZD';
 
@@ -113,7 +115,7 @@ function getCookie() {
 
 // getCookie();
 
-function sendMessBySimi(senderId, text) {
+function _old_sendMessBySimi(senderId, text) {
     var URI = 'http://simsimi.com/getRealtimeReq?uuid=' + uid + '&lc=vi&ft=1&reqText=' + text + '&status=W';
     URI = encodeURI(URI);
     request({
@@ -130,6 +132,13 @@ function sendMessBySimi(senderId, text) {
         }
     });
 }
+
+async function sendMessBySimi(senderId, text) {
+    let mess = await SimsimiServices.getTextRaw(text);
+    if (!mess) mess = 'Xin lỗi câu nói của bãn phắc tạp quá :|';
+    sendMessage(senderId, mess);
+}
+
 function sendMessage(senderId, message) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',

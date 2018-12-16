@@ -14,7 +14,8 @@ async function getText(mess, data) {
 }
 
 module.exports = {
-  getText
+  getText,
+  getTextRaw: getTextApi
 };
 
 // getText('chào').then(res => console.log(res));
