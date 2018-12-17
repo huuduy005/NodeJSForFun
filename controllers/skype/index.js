@@ -28,7 +28,7 @@ async function handleSkype(body) {
 }
 
 //TODO: Nhận thông tin từ skype
-function receive (req) {
+function receive(req) {
     let body = req.body;
     let text = body.text;
     let user = body.from;
@@ -43,7 +43,7 @@ function receive (req) {
     handleSkype(body)
 }
 
-function sendToSkype (data) {
+function sendToSkype(data) {
     let issue = data.issue;
     let watches = issue.fields.watches;
     let actionObj = createActionText(data);
@@ -116,7 +116,7 @@ function sendToSkype (data) {
     })
 }
 
-function sendToUser (user, conversation, text, data) {
+function sendToUser(user, conversation, text, data) {
     token.getToken().then((token) => {
         const options = {
             method: 'POST',
@@ -148,36 +148,31 @@ function sendToUser (user, conversation, text, data) {
     })
 }
 
-function sendTextToSkype (text, users) {
+function tranformText(text) {
+    const regex = /\w/gm;
+    const subst = [`∆`, '⊙', '⊡', '⎕'];
+    return text.replace(regex, (matcher) => _.random(0, 9) < 6 ? matcher : _.sample(subst));
+}
 
-    return new Promise((resolve, reject) => {
-        let watchers = _.uniq(users);//TODO: Lọc các id bị trùng
-        resolve(watchers);
-    }).then((watchers) => {
-        console.log('Thành phần liên quan GIT: ', watchers);
-        //TODO: Lấy thông tin id_skpe của các watchers
-        if (text) {
-            return getListToSend(watchers);
-        } else {
-            return null;
-        }
-    }).then((users) => {
-        if (!users)
-            return;
-        //TODO: Gửi mess cho từng id_skype
-        let ids_skype = _.compact(users.map(user => user.id_skype));
-        ids_skype.forEach((id_skype) => {
-            if (!id_skype) return;
-            token.getToken()
-                .then((token) => {
-                    let options = genContentToRequest(id_skype, id_skype, token, text);
-                    request(options, function (error, response, body) {
-                        if (error) console.log('Skype - Lỗi gửi cho user: ', id_skype);
-                        else console.log('Skype: SEND OK', body);
-                    });
-                })
+async function sendTextToSkype(text, users) {
+    if (!text) return;
+    let watchers = _.uniq(users);//TODO: Lọc các id bị trùng
+    console.log('Thành phần liên quan GIT: ', watchers);
+    //TODO: Lấy thông tin id_skpe của các watchers
+    let _users = await getListToSend(watchers);
+    //TODO: Gửi mess cho từng id_skype
+    let ids_skype = _users.map(user => ({...user}));
+    ids_skype.forEach(async ({id_jira, id_skype}) => {
+        if (!id_skype) return;
+        let token = await token.getToken();
+
+        let _text = id_jira !== 'duy.doan' ? tranformText(text) : text;
+        let options = genContentToRequest(id_skype, id_skype, token, _text);
+        request(options, function (error, response, body) {
+            if (error) console.log('Skype - Lỗi gửi cho user: ', id_skype);
+            else console.log('Skype: SEND OK', body);
         });
-    })
+    });
 }
 
 module.exports = {
@@ -186,28 +181,26 @@ module.exports = {
     sendTextToSkype
 };
 
-function genContentToRequest (id, toId, token, text) {
+function genContentToRequest(id, toId, token, text) {
     return {
         method: 'POST',
         url: 'https://smba.trafficmanager.net/apis/v3/conversations/' + id + '/activities/',
-        headers:
-            {
-                'content-type': 'application/json',
-                authorization: token
-            },
-        body:
-            {
-                type: 'message',
-                textFormat: 'markdown',
-                text: text,
-                from: {id: 'VXR@Nnmguv_2XXw', name: 'Bibu'},
-                replyToId: toId
-            },
+        headers: {
+            'content-type': 'application/json',
+            authorization: token
+        },
+        body: {
+            type: 'message',
+            textFormat: 'markdown',
+            text: text,
+            from: {id: 'VXR@Nnmguv_2XXw', name: 'Bibu'},
+            replyToId: toId
+        },
         json: true
     }
 }
 
-function progressCommand (user, conversation, text, data) {
+function progressCommand(user, conversation, text, data) {
     // console.log(JSON.stringify(conversation));
     let m;
     if ((m = regex_command.exec(text)) !== null) {

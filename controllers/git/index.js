@@ -13,10 +13,8 @@ function receive(req) {
     } else {
       let data_result = progress.progressData(data);
       if (data_result.actionText) {
-        console.log('send mess pr')
-        const regex = /\w/gm;
-        const subst = [`∆`, '⊙', '⊡' , '⎕'];
-        let text = data_result.actionText.replace(regex, (matcher) =>  _.random(0, 9) < 6 ? matcher : _.sample(subst));
+        console.log('send mess pr');
+        let text = data_result.actionText;
         skype.sendTextToSkype(text, data_result.users);
       } else {
         console.log('Ko co send');
