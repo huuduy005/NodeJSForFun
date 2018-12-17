@@ -10,8 +10,13 @@ var fb_chat = require('./facebook-chat');
 var maps = require('../services/maps.googleapis'),
     weather = require('../services/openweathermap');
 
+const SimsimiServices = require('../services/simsimi/index');
+const FBServices = require('../services/facebook');
+const TempsModel = require('../models/temp');
+
 var code_verify = 'hulo005';
 var mAccessToken = 'EAATnBNPBOEgBAAZBDnJg1dv3vbKvFal6Em5LLFP7mvGInJsHjUwcODngcVa15oIhTLO6wPOauq1cIeYiWYghvOBiVRWIscou2cigeFi3JiIe4WG8C206CqxprXKfblHRSoT52JBUxPczrasAUGkev7ZAxYD3D9PFOP5U3gQgZDZD';
+mAccessToken = 'EAATnBNPBOEgBAGQokgFTb1Unjhmo1nQyMVF82W9DlaJU86P5MYVfZCZBIPUpDpsG0HeB5SLfmhmP0NBcmZAQQz8HvDY0vIoYI77szeZBGOgWFUobgv8Paq5GkJISXg72Sj20C2d4ZCBHCy3Foj5UcFituxooIYvKpkmMH0Sm4ZCseG40ZAIOAum';
 
 //Facebook xác thực webhook
 router.get('/', function (req, res) {
@@ -40,59 +45,69 @@ router.post('/test', function (req, res) {
     });
 });
 
-//Nhận tin nhắn từ facebook
-router.post('/', function (req, res) {
-    var entries = req.body.entry;
-    console.log(entries);
-    mess.push(entries);
-    for (var entry of entries) {
-        var messaging = entry.messaging;
-        for (var message of messaging) {
-            var senderId = message.sender.id;
-            if (message.message) {
-                // If user send text
-                if (message.message.text) {
-                    var text = message.message.text;
-                    sendMessBySimi(senderId, text);
-                }
-                if (message.message.attachments) {
-                    var attachments = message.message.attachments;
-                    for (var attachment of attachments) {
-                        if (attachment.type === 'location') {
-                            var lat = attachment.payload.coordinates.lat;
-                            var long = attachment.payload.coordinates.long;
-                            console.log(lat + '-' + long);
-
-                            maps.getCity(lat, long, function (err, city) {
-                                if (err) {
-                                    console.log('Lấy tên thành phố bị lỗi')
-                                    return;
-                                }
-                                weather.get_weather(city, function (err, result) {
-                                    if (err) {
-                                        console.log('Lấy thông tin thời tiết bị lỗi');
-                                        return;
-                                    }
-                                    console.error('SENDER', senderId);
-                                    sendMessage(senderId, result);
-                                })
-                            });
-
-                            sendMessage(senderId, 'Vị trí của bạn (' + lat + ', ' + long + ')');
-                            sendBusAround(senderId, lat, long);
-                        }
-                    }
-                }
-            }
-        }
+async function handleFB(body) {
+    try {
+        let temp = new TempsModel({__source__: 'fb', ...body});
+        await temp.save();
+    } catch (e) {
+        console.warn('>> FB: body ko phai object');
+        let temp = new TempsModel({__source__: 'fb', __data__: JSON.stringify(body)});
+        await temp.save();
     }
-    res.status(200).send("OK");
+}
+
+//Nhận tin nhắn từ facebook
+router.post('/', function(req, res) {
+  let entries = req.body.entry;
+  for (let entry of entries) {
+    let {messaging} = entry;
+    for (let objMess of messaging) {
+      let {message, sender} = objMess;
+      let senderId = sender.id;
+      if (message) {
+        // If user send text
+        if (message.text) {
+          let {text} = message;
+          sendMessBySimi(senderId, text);
+        }
+        if (message.attachments) {
+          handleAttachments(objMess);
+        }
+      }
+    }
+  }
+  res.status(200).send('OK');
+  handleFB(req.body);
 });
 
-var mess = [];
-router.get('/mess', function (req, res) {
-    res.send(mess);
-});
+function handleAttachments({sender, message}) {
+  let {attachments} = message;
+  let senderId = sender.id;
+  for (let attachment of attachments) {
+    if (attachment.type === 'location') {
+      let {lat, long} = attachment.payload.coordinates;
+      console.log(lat + '-' + long);
+
+      maps.getCity(lat, long, function(err, city) {
+        if (err) {
+          console.log('Lấy tên thành phố bị lỗi');
+          return;
+        }
+        weather.get_weather(city, function(err, result) {
+          if (err) {
+            console.log('Lấy thông tin thời tiết bị lỗi');
+            return;
+          }
+          console.error('SENDER', senderId);
+          sendMessage(senderId, result);
+        });
+      });
+
+      sendMessage(senderId, `Vị trí của bạn (${lat}, ${long})`);
+      sendBusAround(senderId, lat, long);
+    }
+  }
+}
 
 var mCookies = request.jar();
 var uid = '';
@@ -113,7 +128,7 @@ function getCookie() {
 
 // getCookie();
 
-function sendMessBySimi(senderId, text) {
+function _old_sendMessBySimi(senderId, text) {
     var URI = 'http://simsimi.com/getRealtimeReq?uuid=' + uid + '&lc=vi&ft=1&reqText=' + text + '&status=W';
     URI = encodeURI(URI);
     request({
@@ -130,22 +145,17 @@ function sendMessBySimi(senderId, text) {
         }
     });
 }
+
+async function sendMessBySimi(senderId, text) {
+    let mess = await SimsimiServices.getTextRaw(text);
+    if (!mess) mess = 'Xin lỗi câu nói của bạn phắc tạp quá :|';
+    sendMessage(senderId, mess);
+}
+
 function sendMessage(senderId, message) {
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: mAccessToken,
-        },
-        method: 'POST',
-        json: {
-            recipient: {
-                id: senderId
-            },
-            message: {
-                text: message
-            },
-        }
-    });
+  FBServices.sendMessage(senderId, message).catch(err => {
+    console.error('>> FB: send mess fail', err);
+  });
 }
 
 function sendBusAround(senderId, lat, long) {
