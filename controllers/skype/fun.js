@@ -47,6 +47,7 @@ const regex = / *(tinhte|tt) */gm;
 const regex_youtube = / *(youtube|yt) */gm;
 
 async function handleFun(data) {
+    if (data.type !== 'message') return;
     let text = `Chào ${data.from.name} buê đuê :)) || Tao éo nói dc câu khác đâu (fingers)`;
     let mess = data.text;
     if (regex.test(mess)) {
