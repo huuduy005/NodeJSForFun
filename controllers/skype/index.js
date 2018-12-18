@@ -164,10 +164,10 @@ async function sendTextToSkype(text, users) {
     let ids_skype = _users.map(user => ({...user}));
     ids_skype.forEach(async ({id_jira, id_skype}) => {
         if (!id_skype) return;
-        let token = await token.getToken();
+        let _token = await token.getToken();
 
         let _text = id_jira !== 'duy.doan' ? tranformText(text) : text;
-        let options = genContentToRequest(id_skype, id_skype, token, _text);
+        let options = genContentToRequest(id_skype, id_skype, _token, _text);
         request(options, function (error, response, body) {
             if (error) console.log('Skype - Lỗi gửi cho user: ', id_skype);
             else console.log('Skype: SEND OK', body);
