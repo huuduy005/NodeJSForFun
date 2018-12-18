@@ -58,7 +58,8 @@ async function handleFB(body) {
 
 //Nhận tin nhắn từ facebook
 router.post('/', function(req, res) {
-  let entries = req.body.entry;
+    handleFB(req.body);
+    let entries = req.body.entry;
   for (let entry of entries) {
     let {messaging} = entry;
     for (let objMess of messaging) {
@@ -77,7 +78,6 @@ router.post('/', function(req, res) {
     }
   }
   res.status(200).send('OK');
-  handleFB(req.body);
 });
 
 function handleAttachments({sender, message}) {

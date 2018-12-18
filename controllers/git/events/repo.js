@@ -3,8 +3,6 @@ const {getChangesCommit, getDataCommit} = require('../../../services/bitbucket/a
 const {sendTextToUser} = require('../../../services/skype');
 const {git_template} = require('../template');
 
-require('../../../mongoose')();
-
 function handleRepo(key, payload) {
   switch (key) {
     case 'refs_changed':
@@ -112,7 +110,7 @@ let payload = {
   ]
 };
 
-pushEvent(payload);
+// pushEvent(payload);
 
 // progress
 //   .refChange(data)
