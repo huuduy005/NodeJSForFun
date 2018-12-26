@@ -37,10 +37,10 @@ module.exports = (mess, data) => {
     if (m = regex_showing.exec(mess)) {
         let id_movie = m[1];
         console.log('get movie', id_movie);
-        getMovie(id_movie, data.id);
+        getMovie(id_movie, data.from.id);
     } else {
         console.log('get showing');
-        getShowing(data.id);
+        getShowing(data.from.id);
     }
 };
 
