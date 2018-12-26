@@ -46,12 +46,13 @@ async function sendToUser(user_id, conversation_id, text, data) {
 
 const regex = / *(tinhte|tt) */gm;
 const regex_youtube = / *(youtube|yt) */gm;
-const regex_galaxy = / *galaxycine.*/gm;
+const regex_galaxy = / *galaxycine *.*/gm;
 
 async function handleFun(data) {
     if (data.type !== 'message') return;
     let text = `Chào ${data.from.name} buê đuê :)) || Tao éo nói dc câu khác đâu (fingers)`;
     let mess = data.text;
+    console.log(mess);
     if (regex.test(mess)) {
         text = await TinhTeServices.getLastThreads();
     } else if (regex_youtube.test(mess)) {
