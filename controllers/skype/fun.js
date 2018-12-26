@@ -5,6 +5,7 @@ const _ = require('lodash');
 const TinhTeServices = require('../../services/tinhte');
 const YoutubeServices = require('../../services/youtube');
 const SimSimiServices = require('../../services/simsimi/index');
+const GalaxyHandle = require('./handle/galaxy');
 
 const SERVICE_URL = 'https://smba.trafficmanager.net/apis';
 
@@ -45,6 +46,7 @@ async function sendToUser(user_id, conversation_id, text, data) {
 
 const regex = / *(tinhte|tt) */gm;
 const regex_youtube = / *(youtube|yt) */gm;
+const regex_galaxy = / *galaxycine.*/gm;
 
 async function handleFun(data) {
     if (data.type !== 'message') return;
@@ -52,8 +54,10 @@ async function handleFun(data) {
     let mess = data.text;
     if (regex.test(mess)) {
         text = await TinhTeServices.getLastThreads();
-    } else if (regex_youtube.test(mess)){
+    } else if (regex_youtube.test(mess)) {
         text = await YoutubeServices.getTrending();
+    } else if (regex_galaxy.test(mess)) {
+        return GalaxyHandle(mess, data);
     } else {
         let _mess = (data.text || '').replace('Bibu ', '');
         text = await SimSimiServices.getText(_mess, data);
