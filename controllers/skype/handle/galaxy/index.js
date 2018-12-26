@@ -34,13 +34,14 @@ const regex_showing = / *galaxycine (.*)/gm;
 module.exports = (mess, data) => {
     console.log('galaxy');
     let m;
+    let id = data.conversation.isGroup ? data.conversation.id : data.from.id;
     if (m = regex_showing.exec(mess)) {
         let id_movie = m[1];
         console.log('get movie', id_movie);
-        getMovie(id_movie, data.from.id);
+        getMovie(id_movie, id);
     } else {
         console.log('get showing');
-        getShowing(data.from.id);
+        getShowing(id);
     }
 };
 
