@@ -57,7 +57,7 @@ async function handleFun(data) {
         text = await TinhTeServices.getLastThreads();
     } else if (regex_youtube.test(mess)) {
         text = await YoutubeServices.getTrending();
-    } else if (regex_galaxy.test(mess)) {
+    } else if (mess.indexOf('galaxycine') >= 0) {
         return GalaxyHandle(mess, data);
     } else {
         let _mess = (data.text || '').replace('Bibu ', '');
