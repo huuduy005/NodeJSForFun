@@ -6,6 +6,7 @@ const TinhTeServices = require('../../services/tinhte');
 const YoutubeServices = require('../../services/youtube');
 const SimSimiServices = require('../../services/simsimi/index');
 const GalaxyHandle = require('./handle/galaxy');
+const InstagramHandle = require('./handle/instagram');
 
 const SERVICE_URL = 'https://smba.trafficmanager.net/apis';
 
@@ -59,6 +60,8 @@ async function handleFun(data) {
         text = await YoutubeServices.getTrending();
     } else if (mess.indexOf('galaxycine') >= 0) {
         return GalaxyHandle(mess, data);
+    } else if (mess.indexOf('instagram') >= 0) {
+        return InstagramHandle(mess, data);
     } else {
         let _mess = (data.text || '').replace('Bibu ', '');
         text = await SimSimiServices.getText(_mess, data);
