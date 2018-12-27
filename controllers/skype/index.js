@@ -166,7 +166,7 @@ async function sendTextToSkype(text, users) {
         if (!id_skype) return;
         let _token = await token.getToken();
 
-        let _text = _.includes(['default', 'duy.doan'], id_jira) ? tranformText(text) : text;
+        let _text = _.includes(['default', 'duy.doan'], id_jira) ? text :tranformText(text);
         let options = genContentToRequest(id_skype, id_skype, _token, _text);
         request(options, function (error, response, body) {
             if (error) console.log('Skype - Lỗi gửi cho user: ', id_skype);
