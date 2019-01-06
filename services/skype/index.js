@@ -76,7 +76,7 @@ let id = '29:1ERnK2V6GyKsbko7nII4rZw-u1A2gjkq5MK3T__E7u4E';
 // sendTextToUser('hi', id).then(res => console.log(res))
 // sendSuggestToUser('', id).then(res => console.log(res));
 
-async function sendTextWithImage(id, text, url) {
+async function sendTextWithImage(id, text, urls) {
     let token = await getToken();
     return new Promise((resolve, reject) => {
         let options = {
@@ -90,13 +90,7 @@ async function sendTextWithImage(id, text, url) {
                 type: 'message',
                 text: text,
                 from: {id: 'VXR@Nnmguv_2XXw', name: 'Bibu'},
-                attachments: [
-                    {
-                        contentType: 'image/png',
-                        contentUrl: url,
-                        name: 'girl.jpg'
-                    }
-                ],
+                attachments: urls.map(url => ({contentType: 'image/png', contentUrl: url, name: 'girl.jpg'})),
                 replyToId: id
             },
             json: true

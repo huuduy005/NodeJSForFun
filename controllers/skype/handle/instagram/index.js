@@ -12,11 +12,15 @@ async function getListProfile(id) {
 
 async function getImageProfile(id_profile, id_user) {
     let data = await getProfileData(id_profile);
+    let images = _.take(data, 5);
+    let urls = images.map(image => {
+        return image.node.display_url;
+    });
     let first = data[0].node;
     let text = `Caption: ${id_profile}\n` + _.get(first,'edge_media_to_caption.edges[0].node.text', 'deo tim thay caption :D');
     let url = first.display_url;
     // console.log(text, url);
-    sendTextWithImage(id_user, text, url);
+    sendTextWithImage(id_user, text, urls);
 }
 
 const regex_profile = / *instagram (.*)/gm;
