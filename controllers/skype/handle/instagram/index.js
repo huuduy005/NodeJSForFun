@@ -10,9 +10,9 @@ async function getListProfile(id) {
     sendSuggestToUser(id, {text: 'Chọn profile m muon xem anh moi nhat', suggestion});
 }
 
-async function getImageProfile(id_profile, id_user) {
+async function getImageProfile(id_profile, num, id_user) {
     let data = await getProfileData(id_profile);
-    let images = _.take(data, 5);
+    let images = _.take(data, num);
     let urls = images.map(image => {
         return image.node.display_url;
     });
@@ -23,16 +23,16 @@ async function getImageProfile(id_profile, id_user) {
     sendTextWithImage(id_user, text, urls);
 }
 
-const regex_profile = / *instagram (.*)/gm;
-
 module.exports = (mess, data) => {
     console.log('instagram');
+    const regex_profile = / *instagram (.*) ?(\d*)$/gm;
     let m;
     let id = data.conversation.isGroup ? data.conversation.id : data.from.id;
     if ((m = regex_profile.exec(mess))) {
-        let id_movie = m[1];
-        console.log('get profile', id_movie);
-        getImageProfile(id_movie, id);
+        let id_instagram = m[1];
+        let num = m[2] || 1;
+        console.log('get profile', id_instagram);
+        getImageProfile(id_instagram, num, id);
     } else {
         console.log('show list profile');
         getListProfile(id);
