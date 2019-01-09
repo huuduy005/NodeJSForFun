@@ -1,72 +1,17 @@
-const token = require('./utils/token');
-const request = require('request');
 const _ = require('lodash');
 
-const TinhTeServices = require('../../services/tinhte');
-const YoutubeServices = require('../../services/youtube');
-const SimSimiServices = require('../../services/simsimi/index');
-const GalaxyHandle = require('./handle/galaxy');
-const InstagramHandle = require('./handle/instagram');
-
-const SERVICE_URL = 'https://smba.trafficmanager.net/apis';
-
-function requestPromise(options) {
-    return new Promise((resolve, reject) => {
-        request(options, (error, response, body) => {
-            if (error) {
-                console.log('Lỗi cmnr send to user');
-                return reject(error)
-            }
-            // console.log('SEND TO USER', body);
-            resolve(body);
-        });
-    })
-}
-
-async function sendToUser(user_id, conversation_id, text, data) {
-    let _token = await token.getToken();
-    const options = {
-        method: 'POST',
-        url: (data.serviceUrl || SERVICE_URL) + '/v3/conversations/' + conversation_id + '/activities/',
-        headers: {
-            'content-type': 'application/json',
-            authorization: _token
-        },
-        body: {
-            type: 'message',
-            textFormat: 'markdown',
-            text: text,
-            from: {id: 'VXR@Nnmguv_2XXw', name: 'Bibu'},
-            replyToId: user_id
-        },
-        json: true
-    };
-
-    return requestPromise(options);
-}
-
-const regex = / *(tinhte|tt) */gm;
-const regex_youtube = / *(youtube|yt) */gm;
-const regex_galaxy = / *galaxycine *.*/gm;
+const parser = require('./yargs');
 
 async function handleFun(data) {
     if (data.type !== 'message') return;
-    let text = `Chào ${data.from.name} buê đuê :)) || Tao éo nói dc câu khác đâu (fingers)`;
+    // let text = `Chào ${data.from.name} buê đuê :)) || Tao éo nói dc câu khác đâu (fingers)`;
     let mess = data.text;
     console.log(mess);
-    if (regex.test(mess)) {
-        text = await TinhTeServices.getLastThreads();
-    } else if (regex_youtube.test(mess)) {
-        text = await YoutubeServices.getTrending();
-    } else if (mess.indexOf('galaxycine') >= 0) {
-        return GalaxyHandle(mess, data);
-    } else if (mess.indexOf('instagram') >= 0) {
-        return InstagramHandle(mess, data);
-    } else {
-        let _mess = (data.text || '').replace('Bibu ', '');
-        text = await SimSimiServices.getText(_mess, data);
+    if (data.conversation.isGroup) {
+        mess = (data.text || '').replace('Bibu ', '');
     }
-    sendToUser(data.from.id, data.conversation.id, text, data).then(res => console.log(JSON.stringify(res)));
+
+    parser(mess, data);
 }
 
 module.exports = handleFun;
@@ -74,37 +19,50 @@ module.exports = handleFun;
 // const mongoose = require('mongoose');
 // // Use native Node promises
 // mongoose.Promise = global.Promise;
-// let db = mongoose.connect('mongodb://huuduy:huuduy@ds031607.mlab.com:31607/sticket', { useNewUrlParser: true });
+// let db = mongoose.connect(
+//     'mongodb://huuduy:huuduy@ds031607.mlab.com:31607/sticket',
+//     {useNewUrlParser: true}
+// );
 
 let data = {
-    "__source__": "skype",
-    "text": "say something else plz",
-    "type": "message",
-    "timestamp": "2018-12-13T04:47:11.335Z",
-    "channelId": "skype",
-    "serviceUrl": "https://smba.trafficmanager.net/apis/",
-    "from": {
-        "id": "29:1toazxSvzULB20n_oboWc7SXQBXKBbGtPcMsYKOnTX4COOu8inQkizvuw0TPdMoYs",
-        "name": "Dat Nguyen Ngo Thanh"
+    __source__: 'skype',
+    text: 'Bibu instagram thuytienn0801 10',
+    type: 'message',
+    timestamp: '2019-01-09T03:14:57.081Z',
+    channelId: 'skype',
+    serviceUrl: 'https://smba.trafficmanager.net/apis/',
+    from: {
+        id: '29:1ERnK2V6GyKsbko7nII4rZw-u1A2gjkq5MK3T__E7u4E',
+        name: 'Hữu Duy'
     },
-    "conversation": {
-        "id": "29:1toazxSvzULB20n_oboWc7SXQBXKBbGtPcMsYKOnTX4COOu8inQkizvuw0TPdMoYs"
+    conversation: {
+        isGroup: true,
+        id: '19:fd121046e22c47d182a02c1d5732b59d@thread.skype'
     },
-    "recipient": {
-        "id": "28:fc8c192b-9c4f-47dd-a8a9-e045505434e4",
-        "name": "Bibu"
+    recipient: {
+        id: '28:fc8c192b-9c4f-47dd-a8a9-e045505434e4',
+        name: 'Bibu'
     },
-    "entities": [
+    entities: [
         {
-            "locale": "en-US",
-            "country": "SG",
-            "platform": "Web",
-            "timezone": "Asia/Bangkok",
-            "type": "clientInfo"
+            mentioned: {
+                id: '28:fc8c192b-9c4f-47dd-a8a9-e045505434e4'
+            },
+            text: '<at id="28:fc8c192b-9c4f-47dd-a8a9-e045505434e4">Bibu</at>',
+            type: 'mention'
+        },
+        {
+            locale: 'en-US',
+            country: 'VN',
+            platform: 'Linux',
+            timezone: 'Asia/Saigon',
+            type: 'clientInfo'
         }
     ],
-    "channelData": {
-        "text": "say something else plz"
+    channelData: {
+        text: '<at id="28:fc8c192b-9c4f-47dd-a8a9-e045505434e4">Bibu</at> instagram thuytienn0801 10'
     },
-    "__v": 0
+    __v: 0
 };
+
+// handleFun(data);
