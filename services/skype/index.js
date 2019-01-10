@@ -5,7 +5,7 @@ async function sendTextToUser(text, id, opts = {}) {
     let token = await getToken();
     return new Promise((resolve, reject) => {
         let options = genOptionsToRequest(id, id, token, text, opts);
-        request(options, function (error, response, body) {
+        request(options, function(error, response, body) {
             if (error) {
                 console.error('[SKYPE] FAIL send to user', id);
                 return reject(error);
@@ -38,7 +38,8 @@ function genOptionsToRequest(id, toId, token, text, options = {}) {
 module.exports = {
     sendTextToUser,
     sendSuggestToUser,
-    sendTextWithImage
+    sendTextWithImage,
+    sendImagesWithTitle
 };
 
 function genOptionsSuggest(id, toId, token, data = {}) {
@@ -60,7 +61,7 @@ async function sendSuggestToUser(id, data) {
     let token = await getToken();
     return new Promise((resolve, reject) => {
         let options = genOptionsSuggest(id, id, token, data);
-        request(options, function (error, response, body) {
+        request(options, function(error, response, body) {
             if (error) {
                 console.error('[SKYPE] FAIL send suggestion to user', id);
                 return reject(error);
@@ -95,7 +96,7 @@ async function sendTextWithImage(id, text, urls) {
             },
             json: true
         };
-        request(options, function (error, response, body) {
+        request(options, function(error, response, body) {
             if (error) {
                 console.error('[SKYPE] FAIL send suggestion to user', id);
                 return reject(error);
@@ -108,4 +109,42 @@ async function sendTextWithImage(id, text, urls) {
 
 let url = 'https://znews-photo.zadn.vn/w660/Uploaded/neg_rtlzofn/2018_11_14/247164281720ed5dc9ef5k1482824185.jpg';
 id = '19:fd121046e22c47d182a02c1d5732b59d@thread.skype';
+
 // sendTextWithImage(id, 'girl xinh', url);
+
+async function sendImagesWithTitle(id, text, images) {
+    let token = await getToken();
+    return new Promise((resolve, reject) => {
+        let options = {
+            method: 'POST',
+            url: 'https://smba.trafficmanager.net/apis/v3/conversations/' + id + '/activities/',
+            headers: {
+                'content-type': 'application/json',
+                authorization: token
+            },
+            body: {
+                type: 'message',
+                'attachmentLayout': 'carousel',
+                text: text,
+                from: {id: 'VXR@Nnmguv_2XXw', name: 'Bibu'},
+                attachments: images.map(image => ({
+                    contentType: 'application/vnd.microsoft.card.hero',
+                    content: {
+                        title: image.title,
+                        images: [{url: image.url}]
+                    }
+                })),
+                replyToId: id
+            },
+            json: true
+        };
+        request(options, function(error, response, body) {
+            if (error) {
+                console.error('[SKYPE] FAIL send suggestion to user', id);
+                return reject(error);
+            }
+            console.log('[SKYPE] SEND suggestion OK', JSON.stringify(body));
+            return resolve('OK');
+        });
+    });
+}
