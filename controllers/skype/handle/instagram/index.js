@@ -1,5 +1,5 @@
 const getProfileData = require('../../../../services/instagram/profile');
-const {sendTextWithImage, sendSuggestToUser} = require('../../../../services/skype');
+const {sendImagesWithTitle, sendSuggestToUser} = require('../../../../services/skype');
 const _ = require('lodash');
 
 const list_profile = ['supershuu'];
@@ -13,14 +13,16 @@ async function getListProfile(id) {
 async function getImageProfile(id_profile, num, id_user) {
     let data = await getProfileData(id_profile);
     let images = _.take(data, num);
-    let urls = images.map(image => {
-        return image.node.display_url;
+    let dataImages = images.map(image => {
+        return {
+            title: _.get(image,'node.edge_media_to_caption.edges[0].node.text', 'deo tim thay caption :D'),
+            url:image.node.display_url};
     });
     let first = data[0].node;
     let text = `Caption: ${id_profile}\n` + _.get(first,'edge_media_to_caption.edges[0].node.text', 'deo tim thay caption :D');
     let url = first.display_url;
-    // console.log(text, url);
-    sendTextWithImage(id_user, text, urls);
+    console.log(text, url);
+    sendImagesWithTitle(id_user, text, dataImages);
 }
 
 module.exports = (mess, data) => {
@@ -38,26 +40,3 @@ module.exports = (mess, data) => {
         getListProfile(id);
     }
 };
-
-let data = {
-    __source__: 'skype',
-    topicName: 'Hiệp hội trai ngành xiaolin ',
-    type: 'conversationUpdate',
-    timestamp: '2018-12-27T03:09:44.806Z',
-    channelId: 'skype',
-    serviceUrl: 'https://smba.trafficmanager.net/apis/',
-    from: {
-        id: '29:1G6fFff4M3OKfCldLGqD7SpfCWcp8ZTYOPlwXmZtbH4E'
-    },
-    conversation: {
-        isGroup: true,
-        id: '19:fd121046e22c47d182a02c1d5732b59d@thread.skype'
-    },
-    recipient: {
-        id: '28:fc8c192b-9c4f-47dd-a8a9-e045505434e4',
-        name: 'Bibu'
-    },
-    __v: 0
-};
-
-// module.exports('instagram h.viviha 10', data);
