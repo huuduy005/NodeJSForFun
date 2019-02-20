@@ -36,6 +36,7 @@ function genOptionsToRequest(id, toId, token, text, options = {}) {
 }
 
 module.exports = {
+    send,
     sendTextToUser,
     sendSuggestToUser,
     sendTextWithImage,
@@ -145,6 +146,38 @@ async function sendImagesWithTitle(id, text, images) {
             }
             console.log('[SKYPE] SEND suggestion OK', JSON.stringify(body));
             return resolve('OK');
+        });
+    });
+}
+
+
+async function send(id, text, {attachmentLayout = 'carousel', attachments}) {
+    let token = await getToken();
+    return new Promise((resolve, reject) => {
+        let options = {
+            method: 'POST',
+            url: 'https://smba.trafficmanager.net/apis/v3/conversations/' + id + '/activities/',
+            headers: {
+                'content-type': 'application/json',
+                authorization: token
+            },
+            body: {
+                type: 'message',
+                attachmentLayout: attachmentLayout,
+                text: text,
+                from: {id: 'VXR@Nnmguv_2XXw', name: 'Bibu'},
+                attachments: attachments,
+                replyToId: id
+            },
+            json: true
+        };
+        request(options, function(error, response, body) {
+            if (error) {
+                console.error('[SKYPE] FAIL to user', id);
+                return reject(error);
+            }
+            console.log('[SKYPE] SEND OK', JSON.stringify(body));
+            return resolve(body);
         });
     });
 }
