@@ -32,7 +32,7 @@ async function main() {
 
 // console.log(numeral(26990000).format('0,0'));
 
-const CRON_TIME = '0 6-23/2 * * *';
+const CRON_TIME = '0 0,6-23/2 * * *';
 
 function doJob() {
     main().catch(err => console.log(err));
@@ -41,4 +41,3 @@ function doJob() {
 doJob();
 
 const myCronJob = new CronJob(CRON_TIME, doJob, null, true, 'Asia/Ho_Chi_Minh');
-const myCronJob2 = new CronJob('0 0 * * *', doJob, null, true, 'Asia/Ho_Chi_Minh');
