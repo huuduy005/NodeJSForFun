@@ -1,9 +1,16 @@
 const defer = require('config/defer').deferConfig;
+const path = require('path');
 
 module.exports = {
     IS_SEND_SLACK: true,
     IS_SEND_SKYPE: true,
     ID_DEFAULT_1: '',
+    VIBER_TOKEN: '',
+    PATH: {
+        LOGS: defer(function() {
+            return path.resolve(__dirname, '..', 'logs');
+        })
+    },
     mongodb: {
         host: 'ds031607.mlab.com',
         port: 31607,

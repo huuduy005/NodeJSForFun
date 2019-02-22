@@ -1,10 +1,11 @@
 {
-  "IS_SEND_SLACK": {
-    "__name": "IS_SEND_SLACK",
-    "__format": "json"
-  },
-  "IS_SEND_SKYPE": {
-    "__name": "IS_SEND_SKYPE",
-    "__format": "json"
-  }
+    "VIBER_TOKEN": "VIBER_TOKEN",
+    "IS_SEND_SLACK": {
+        "__name": "IS_SEND_SLACK",
+        "__format": "json"
+    },
+    "IS_SEND_SKYPE": {
+        "__name": "IS_SEND_SKYPE",
+        "__format": "json"
+    }
 }
