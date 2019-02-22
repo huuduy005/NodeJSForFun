@@ -8,6 +8,7 @@ const ps = require('../controllers/ps');
 const config = require('config');
 const _ = require('lodash');
 const validate = require('validate.js');
+const Viber = require('./whooks/viber');
 
 /* GET users listing. */
 router.all('/*', function (req, res, next) {
@@ -52,6 +53,8 @@ router.all('/ps', (req, res, next) => {
     ps.receive(req);
     res.send('OK')
 });
+
+router.use('/viber', Viber);
 
 module.exports = router;
 
