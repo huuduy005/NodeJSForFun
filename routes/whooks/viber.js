@@ -9,11 +9,12 @@ router.get('/ping', (request, response) => {
 });
 
 router.post('/', (request, response) => {
+    response.send('ok');
+    response.end();
     // console.log('Request data:', request.body);
     handleSkype(request.body);
 
     Bot._handleEventReceived(request.body);
-    response.end();
 });
 
 module.exports = router;

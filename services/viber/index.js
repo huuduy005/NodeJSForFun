@@ -8,6 +8,8 @@ const Mylogger = winston.loggers.get('viber');
 
 const SimSimiServices = require('../simsimi/index');
 
+console.log('Token', VIBER_TOKEN);
+
 const bot = new ViberBot({
     logger: Mylogger,
     authToken: VIBER_TOKEN,
@@ -26,8 +28,8 @@ bot.on(BotEvents.MESSAGE_RECEIVED, async (message, response) => {
 
 bot.on('webhook', (message, response) => {
     // Echo's back the message to the client. Your bot logic should sit here.
-    console.log(message);
-    response.send();
+    console.log('webhook', message);
+    // response.send();
 });
 
 module.exports = bot;
