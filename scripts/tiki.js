@@ -2,7 +2,7 @@ const _ = require('lodash');
 const {CronJob} = require('cron');
 
 const {send} = require('../services/skype');
-const {getInfo, ajaxProductRender} = require('./api');
+const {getInfo, ajaxProductRender} = require('../services/tiki/api');
 const {humanPrice} = require('./utils');
 
 require('../mongoose')();
