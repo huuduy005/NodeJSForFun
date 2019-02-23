@@ -15,7 +15,11 @@ const bot = new ViberBot({
 });
 
 // Perfect! Now here's the key part:
-bot.on(BotEvents.MESSAGE_RECEIVED, async (message, response) => {
+bot.on(BotEvents.MESSAGE_RECEIVED, async (message, response, isSilent) => {
+    if (isSilent) {
+        console.log('Mess silent');
+        return;
+    }
     // Echo's back the message to the client. Your bot logic should sit here.
     console.log(message.text);
     let text = await SimSimiServices.getTextRaw(message.text);
