@@ -1,14 +1,11 @@
 const {VIBER_TOKEN} = require('config');
 const {Bot: ViberBot, Events: BotEvents} = require('viber-bot');
 const TextMessage = require('viber-bot').Message.Text;
+const winston = require('winston');
 
 require('./loggers');
-const winston = require('winston');
 const Mylogger = winston.loggers.get('viber');
-
 const SimSimiServices = require('../simsimi/index');
-
-console.log('Token', VIBER_TOKEN);
 
 const bot = new ViberBot({
     logger: Mylogger,
@@ -27,9 +24,7 @@ bot.on(BotEvents.MESSAGE_RECEIVED, async (message, response) => {
 });
 
 bot.on('webhook', (message, response) => {
-    // Echo's back the message to the client. Your bot logic should sit here.
     console.log('webhook', message);
-    // response.send();
 });
 
 module.exports = bot;
