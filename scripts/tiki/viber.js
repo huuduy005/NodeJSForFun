@@ -42,7 +42,7 @@ function addACard({data, product, productRender}, cardList) {
             Columns: 6,
             Rows: 2,
             Silent: true,
-            Text: `<b>${humanPrice(product.price)} đ</b>`,
+            Text: `<b>${humanPrice(product.price)} đ</b> - In Stock ${productRender.stock_item.qty}`,
             ActionType: 'open-url',
             ActionBody: link,
             TextSize: 'large',
