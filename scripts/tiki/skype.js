@@ -16,6 +16,7 @@ async function sendMess({data, products, productRenders}){
     }));
     console.log(attachments[0].content);
     let res = await send(id, 'hello', {attachments});
+    return res;
 }
 
 module.exports = sendMess;
