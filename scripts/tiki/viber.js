@@ -1,5 +1,5 @@
 const {UserProfile, Message: MessageType} = require('viber-bot');
-const {RichMedia} = MessageType;
+const {RichMedia, Text} = MessageType;
 
 const Bot = require('../../services/viber');
 const {humanPrice} = require('../utils');
@@ -94,3 +94,19 @@ async function sendMess({data, products, productRenders}) {
 }
 
 module.exports = sendMess;
+
+module.exports.sendText = text => {
+    let message = new Text(text);
+
+    let user = UserProfile.fromJson(Duy);
+    return Bot.sendMessage(user, message).catch(err => {
+        console.log(err);
+    });
+};
+
+module.exports.sendRich = message => {
+    let user = UserProfile.fromJson(Duy);
+    return Bot.sendMessage(user, message).catch(err => {
+        console.log(err);
+    });
+};
