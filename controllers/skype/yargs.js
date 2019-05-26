@@ -38,7 +38,7 @@ const youtube = {
 };
 
 const instagram = {
-    command: 'instagram [id_rpofile] [num]',
+    command: ['instagram [id_rpofile] [num]', 'ig'],
     describe: '',
     builder: noop,
     handler: function (argv) {
