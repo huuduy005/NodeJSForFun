@@ -25,7 +25,7 @@ async function getImageProfile(id_profile, num, id_user) {
 
 module.exports = (mess, data) => {
     console.log('instagram');
-    const regex_profile = / *instagram ([^ ]+) ?(\d*)$/;
+    const regex_profile = / *[instagram|ig] ([^ ]+) ?(\d*)$/;
     let m;
     let id = data.conversation.isGroup ? data.conversation.id : data.from.id;
     if ((m = regex_profile.exec(mess))) {
