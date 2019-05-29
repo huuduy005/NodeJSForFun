@@ -56,7 +56,6 @@ const instagramSearch = {
         if (search === 'search') {
             searchProfile(keyword, data);
         } else {
-            let {mess, data} = argv;
             InstagramHandle(mess, data);
         }
     }
