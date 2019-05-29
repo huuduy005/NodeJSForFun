@@ -9,8 +9,7 @@ const {searchProfile} = InstagramHandle;
 
 const sendToUser = require('./utils/sendToUser');
 
-function noop() {
-}
+function noop() {}
 
 function sendMess(text, data) {
     sendToUser(data.from.id, data.conversation.id, text, data).then(res => console.log(JSON.stringify(res)));
@@ -20,10 +19,10 @@ const tinhte = {
     command: ['tinhte', 'tt'],
     describe: 'get lastest topics tinhte',
     builder: noop,
-    handler: async function (argv) {
+    handler: async function(argv) {
         let {mess, data} = argv;
         let text = await TinhTeServices.getLastThreads();
-        sendMess(text, data)
+        sendMess(text, data);
     }
 };
 
@@ -31,18 +30,18 @@ const youtube = {
     command: ['youtube [action]', 'yt'],
     describe: 'youtube',
     builder: noop,
-    handler: async function (argv) {
+    handler: async function(argv) {
         let {mess, data} = argv;
         let text = await YoutubeServices.getTrending();
-        sendMess(text, data)
+        sendMess(text, data);
     }
 };
 
 const instagram = {
-    command: ['instagram [id_rpofile] [num]', 'ig'],
+    command: ['instagram [id_profile] [num]', 'ig'],
     describe: '',
     builder: noop,
-    handler: function (argv) {
+    handler: function(argv) {
         let {mess, data} = argv;
         InstagramHandle(mess, data);
     }
@@ -52,9 +51,14 @@ const instagramSearch = {
     command: ['instagram search [keyword]', 'ig'],
     describe: '',
     builder: noop,
-    handler: function (argv) {
+    handler: function(argv) {
         let {mess, search, keyword, data} = argv;
-        searchProfile(keyword, data)
+        if (search === 'search') {
+            searchProfile(keyword, data);
+        } else {
+            let {mess, data} = argv;
+            InstagramHandle(mess, data);
+        }
     }
 };
 
@@ -62,7 +66,7 @@ const galaxy = {
     command: 'galaxycine',
     describe: [],
     builder: noop,
-    handler: function (argv) {
+    handler: function(argv) {
         let {mess, data} = argv;
         GalaxyHandle(mess, data);
     }
@@ -72,7 +76,7 @@ const unknown = {
     command: '*',
     describe: [],
     builder: noop,
-    handler: async function (argv) {
+    handler: async function(argv) {
         let {mess, data} = argv;
         let text = await SimSimiServices.getText(mess, data);
         sendToUser(data.from.id, data.conversation.id, text, data).then(res => console.log(JSON.stringify(res)));
@@ -89,6 +93,5 @@ const parser = yargs
     .help();
 
 module.exports = (mess, data) => {
-    parser.parse(mess, {mess, data}, (err, argv, output) => {
-    });
+    parser.parse(mess, {mess, data}, (err, argv, output) => {});
 };
