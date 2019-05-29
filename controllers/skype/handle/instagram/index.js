@@ -1,6 +1,7 @@
+const _ = require('lodash');
 const getProfileData = require('../../../../services/instagram/profile');
 const {sendTextWithImage, sendSuggestToUser} = require('../../../../services/skype');
-const _ = require('lodash');
+const {search} = require('./searchProfile');
 
 const list_profile = ['supershuu'];
 
@@ -23,7 +24,7 @@ async function getImageProfile(id_profile, num, id_user) {
     sendTextWithImage(id_user, text, urls);
 }
 
-module.exports = (mess, data) => {
+module.exports = function (mess, data) {
     console.log('instagram');
     const regex_profile = / *[instagram|ig] ([^ ]+) ?(\d*)$/;
     let m;
@@ -38,6 +39,8 @@ module.exports = (mess, data) => {
         getListProfile(id);
     }
 };
+
+module.exports.searchProfile = search;
 
 let data = {
     __source__: 'skype',

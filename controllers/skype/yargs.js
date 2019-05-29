@@ -5,6 +5,7 @@ const YoutubeServices = require('../../services/youtube');
 const SimSimiServices = require('../../services/simsimi/index');
 const GalaxyHandle = require('./handle/galaxy');
 const InstagramHandle = require('./handle/instagram');
+const {searchProfile} = InstagramHandle;
 
 const sendToUser = require('./utils/sendToUser');
 
@@ -47,6 +48,16 @@ const instagram = {
     }
 };
 
+const instagramSearch = {
+    command: ['instagram search [keyword]', 'ig'],
+    describe: '',
+    builder: noop,
+    handler: function (argv) {
+        let {mess, search, keyword, data} = argv;
+        searchProfile(keyword, data)
+    }
+};
+
 const galaxy = {
     command: 'galaxycine',
     describe: [],
@@ -72,6 +83,7 @@ const parser = yargs
     .command(tinhte)
     .command(youtube)
     .command(instagram)
+    .command(instagramSearch)
     .command(galaxy)
     .command(unknown)
     .help();
